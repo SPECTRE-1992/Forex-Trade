@@ -2,124 +2,279 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Forex App Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #121212;
-            --surface-dark: #1e1e1e;
-            --primary: #bb86fc;
-            --secondary: #03dac6;
-            --error: #cf6679;
-            --text-main: #ffffff;
-            --text-muted: #b3b3b3;
+            --bg-dark: #0f172a;       /* Slate 900 */
+            --surface-dark: #1e293b;  /* Slate 800 */
+            --surface-hover: #334155; /* Slate 700 */
+            --primary: #818cf8;       /* Indigo 400 */
+            --primary-glow: rgba(129, 140, 248, 0.4);
+            --secondary: #34d399;     /* Emerald 400 */
+            --error: #f87171;         /* Red 400 */
+            --text-main: #f8fafc;     /* Slate 50 */
+            --text-muted: #94a3b8;    /* Slate 400 */
+            --border: #334155;
         }
+
+        * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
+            padding-bottom: 90px; /* เผื่อที่ให้ปุ่ม FAB */
+        }
+
+        /* --- Login Section --- */
+        #login-section {
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
-        .container { width: 100%; max-width: 550px; }
-        .card {
+        .login-card {
             background-color: var(--surface-dark);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
+            border-radius: 20px;
+            padding: 30px 25px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid var(--border);
+            text-align: center;
         }
-        h2, h3 { text-align: center; margin-top: 0; color: var(--primary); }
-        
+
+        h2 { font-weight: 600; margin-top: 0; margin-bottom: 25px; }
+        .text-primary { color: var(--primary); }
+
+        /* --- Forms & Inputs --- */
         input, select {
-            width: 100%; padding: 12px; margin-top: 5px; margin-bottom: 15px;
-            border: 1px solid #444; border-radius: 8px;
-            background-color: #2c2c2c; color: white; box-sizing: border-box; font-size: 16px;
+            width: 100%;
+            padding: 14px 16px;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
         }
-        label { font-size: 14px; color: var(--text-muted); }
-        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        label { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-left: 4px; }
+
         button {
-            width: 100%; padding: 14px; background-color: var(--primary); color: #000;
-            border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
-        button:hover { background-color: #9965f4; }
-        .btn-outline { background-color: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        
+        button:active { transform: scale(0.98); }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            box-shadow: none;
+            margin-top: 15px;
+        }
+        .btn-outline:active { background-color: var(--surface-hover); }
+
+        /* --- Navigation / Sections --- */
         #app-section, #form-section { display: none; }
-        
-        /* Dashboard Layout */
-        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .filter-box { display: flex; gap: 10px; margin-bottom: 20px; align-items: center;}
-        .filter-box input[type="month"] { margin-bottom: 0; padding: 10px; }
-        .filter-box button { margin-top: 0; width: auto; padding: 10px 15px; font-size: 14px; }
-        
-        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .dash-card { background: #2a2a2a; padding: 15px; border-radius: 10px; text-align: center; }
-        .dash-title { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
-        .dash-value { font-size: 18px; font-weight: bold; }
-        
-        /* List Items */
-        .list-container { max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        .list-item { 
-            background: #252525; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-left: 4px solid var(--primary);
+
+        /* --- Dashboard --- */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
         }
-        .list-item.deposit { border-left-color: var(--secondary); }
-        .list-item.withdraw { border-left-color: var(--error); }
+        .app-header h2 { margin: 0; font-size: 24px; color: #fff;}
+
+        /* Filter */
+        .filter-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            align-items: center;
+            background: var(--surface-dark);
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+        .filter-box input[type="month"] { margin-bottom: 0; padding: 10px; border-radius: 8px; flex: 1; }
+        .filter-box button { margin-top: 0; width: auto; padding: 10px 16px; font-size: 14px; border-radius: 8px; }
+
+        /* Summary Grid */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .dash-card {
+            background: linear-gradient(145deg, var(--surface-dark), var(--bg-dark));
+            padding: 16px 10px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .dash-title { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+        .dash-value { font-size: 18px; font-weight: 600; }
+
+        /* Transaction List */
+        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
         
+        .list-item { 
+            background: var(--surface-dark);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+        .list-item:active { background: var(--surface-hover); }
+        
+        /* Icon styling based on type */
+        .item-icon-wrapper {
+            width: 40px; height: 40px; border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 20px; margin-right: 15px; flex-shrink: 0;
+        }
+        .deposit .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
+        .withdraw .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
+
+        .item-left { display: flex; align-items: center; flex: 1; overflow: hidden; }
         .item-main { display: flex; flex-direction: column; }
-        .item-title { font-weight: bold; font-size: 15px; }
-        .item-date { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
-        .item-note { font-size: 11px; color: #888; margin-top: 3px; }
+        .item-title { font-weight: 600; font-size: 15px; }
+        .item-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .item-note { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
         
-        .item-amount { text-align: right; }
-        .val-foreign { font-weight: bold; font-size: 15px; }
-        .val-thb { font-size: 12px; color: var(--text-muted); }
+        .item-amount { text-align: right; flex-shrink: 0; }
+        .val-foreign { font-weight: 600; font-size: 16px; }
+        .val-thb { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        
         .positive { color: var(--secondary); }
         .negative { color: var(--error); }
         
-        .loading { text-align: center; color: var(--text-muted); display: none; padding: 20px; }
+        /* Loading */
+        .loading { text-align: center; color: var(--primary); display: none; padding: 20px; font-weight: 500; font-size: 14px; }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(129,140,248,0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Floating Action Button (FAB) */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            box-shadow: 0 8px 20px var(--primary-glow);
+            cursor: pointer;
+            border: none;
+            z-index: 1000;
+            transition: transform 0.2s;
+            margin: 0;
+            padding: 0;
+        }
+        .fab:active { transform: scale(0.9); }
+
+        /* Form Header */
+        .form-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+        .back-btn {
+            background: var(--surface-dark); width: 40px; height: 40px;
+            border-radius: 12px; border: 1px solid var(--border);
+            display: flex; justify-content: center; align-items: center;
+            color: #fff; text-decoration: none; font-size: 18px; margin: 0; padding: 0; box-shadow: none;
+        }
+        .form-header h2 { margin: 0; font-size: 20px; }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="login-section" class="card">
-        <h2>🔒 เข้าสู่ระบบ</h2>
-        <input type="password" id="password" placeholder="Enter Password (กด Enter ได้เลย)" onkeypress="handleLoginKey(event)">
+<div id="login-section">
+    <div class="login-card">
+        <h2 class="text-primary">Forex App Pro</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">กรุณาใส่รหัสผ่านเพื่อเข้าใช้งาน</p>
+        <input type="password" id="password" placeholder="รหัสผ่าน (กด Enter ได้เลย)" onkeypress="handleLoginKey(event)" style="text-align: center;">
         <button onclick="checkLogin()">เข้าสู่ระบบ</button>
-        <p id="login-error" style="color: var(--error); text-align: center; display: none; font-size: 14px;">รหัสผ่านไม่ถูกต้อง!</p>
+        <p id="login-error" style="color: var(--error); display: none; font-size: 14px; margin-top: 15px;">รหัสผ่านไม่ถูกต้อง!</p>
     </div>
+</div>
 
+<div class="container" id="main-container" style="display: none;">
     <div id="app-section">
-        <div class="card">
-            <div class="header-flex">
-                <h2 style="margin: 0;">📊 Dashboard</h2>
-                <button onclick="showForm()" style="width: auto; padding: 8px 15px; margin: 0; font-size: 14px;">+ เพิ่มรายการ</button>
+        <div class="app-header">
+            <div>
+                <div style="font-size: 14px; color: var(--text-muted);">ยินดีต้อนรับ 👋</div>
+                <h2>ภาพรวมพอร์ตโฟลิโอ</h2>
             </div>
-            
-            <div class="filter-box">
-                <label>กรองเดือน:</label>
-                <input type="month" id="monthFilter" onchange="filterData()">
-                <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
-            </div>
-
-            <div class="dash-grid" id="summary-cards">
-                </div>
-
-            <h3 style="text-align: left; font-size: 16px; color: #fff;">ประวัติรายการ</h3>
-            <div id="dash-loading" class="loading">⏳ กำลังโหลดข้อมูล...</div>
-            
-            <div class="list-container" id="transaction-list">
-                </div>
         </div>
+        
+        <div class="filter-box">
+            <input type="month" id="monthFilter" onchange="filterData()">
+            <button class="btn-outline" onclick="clearFilter()" style="margin: 0;">รีเซ็ต</button>
+        </div>
+
+        <div class="dash-grid" id="summary-cards">
+            </div>
+
+        <div class="section-title">ประวัติรายการ</div>
+        <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
+        
+        <div class="list-container" id="transaction-list">
+            </div>
+
+        <button class="fab" onclick="showForm()">+</button>
     </div>
 
-    <div id="form-section" class="card">
-        <h3>บันทึก ฝาก/ถอน</h3>
+    <div id="form-section">
+        <div class="form-header">
+            <button class="back-btn" onclick="showDashboard()">←</button>
+            <h2>บันทึก ฝาก/ถอน</h2>
+        </div>
         <form id="forexForm">
             <label>สกุลเงิน</label>
             <select id="currency">
@@ -135,20 +290,19 @@
             </select>
 
             <label>จำนวนเงินต่างประเทศ (Foreign Amount)</label>
-            <input type="number" id="amountForeign" step="0.01" required>
+            <input type="number" id="amountForeign" step="0.01" placeholder="0.00" required>
 
             <label>อัตราแลกเปลี่ยน (Exchange Rate)</label>
             <input type="number" id="rate" step="0.0001" placeholder="เช่น 45.50" required>
 
-            <label>จำนวนเงินบาท (THB) - <span style="color:var(--secondary);font-size:12px;">คำนวณอัตโนมัติ</span></label>
-            <input type="number" id="amountTHB" step="0.01" required>
+            <label>จำนวนเงินบาท (THB) <span style="color:var(--secondary);">(คำนวณอัตโนมัติ)</span></label>
+            <input type="number" id="amountTHB" step="0.01" placeholder="0.00" required>
 
             <label>หมายเหตุ</label>
             <input type="text" id="note" placeholder="เช่น Exness, ถอนกำไร...">
 
             <button type="submit" id="submitBtn">บันทึกข้อมูล</button>
-            <button type="button" class="btn-outline" onclick="showDashboard()">ยกเลิกกลับไปหน้าแรก</button>
-            <div id="form-loading" class="loading" style="margin-top: 15px;">⏳ กำลังบันทึกข้อมูล...</div>
+            <div id="form-loading" class="loading" style="margin-top: 15px;"><div class="spinner"></div> กำลังบันทึกข้อมูล...</div>
         </form>
     </div>
 </div>
@@ -157,7 +311,7 @@
     // 🚨🚨🚨 นำ URL ของ Web App อันใหม่ที่เพิ่ง Deploy มาใส่ตรงนี้ 🚨🚨🚨
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDtIhfDFcfgvwdG2OvbUjJ9hYq3mH8795ZSW31x4SJs_F01-wZzyxMj3iUf6J6Gso/exec';
 
-    let allData = []; // เก็บข้อมูลทั้งหมด
+    let allData = [];
 
     // --- Login Logic ---
     function handleLoginKey(e) { if(e.key === 'Enter') checkLogin(); }
@@ -166,6 +320,7 @@
         const pass = document.getElementById('password').value;
         if (pass === 'spectre') {
             document.getElementById('login-section').style.display = 'none';
+            document.getElementById('main-container').style.display = 'block';
             document.getElementById('app-section').style.display = 'block';
             loadData();
         } else {
@@ -177,10 +332,12 @@
     function showForm() {
         document.getElementById('app-section').style.display = 'none';
         document.getElementById('form-section').style.display = 'block';
+        window.scrollTo(0, 0); // เลื่อนกลับไปบนสุดเวลาเปลี่ยนหน้า
     }
     function showDashboard() {
         document.getElementById('form-section').style.display = 'none';
         document.getElementById('app-section').style.display = 'block';
+        window.scrollTo(0, 0);
     }
 
     // --- Auto Calculate THB ---
@@ -206,7 +363,7 @@
             .then(res => {
                 if(res.status === 'success') {
                     allData = res.data;
-                    filterData(); // แสดงผลทั้งหมดตอนแรก
+                    filterData();
                 }
             })
             .catch(err => console.error(err))
@@ -220,7 +377,7 @@
     }
 
     function filterData() {
-        const filterVal = document.getElementById('monthFilter').value; // format: "YYYY-MM"
+        const filterVal = document.getElementById('monthFilter').value;
         let filtered = allData;
 
         if(filterVal) {
@@ -258,7 +415,7 @@
             let sign = net > 0 ? '+' : '';
             html += `
                 <div class="dash-card">
-                    <div class="dash-title">${curr} Net</div>
+                    <div class="dash-title">${curr}</div>
                     <div class="dash-value ${cssClass}">${sign}${net.toFixed(2)}</div>
                 </div>
             `;
@@ -269,25 +426,33 @@
     function renderList(data) {
         let html = '';
         if(data.length === 0) {
-            html = '<div style="text-align:center; color:#888; padding:20px;">ไม่มีข้อมูลในเดือนนี้</div>';
+            html = '<div style="text-align:center; color:var(--text-muted); padding:30px; background:var(--surface-dark); border-radius:16px;">ไม่พบรายการในเดือนนี้</div>';
         }
 
         data.forEach(item => {
             let d = new Date(item.date);
-            let dateStr = d.toLocaleDateString('th-TH') + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit', minute:'2-digit'});
-            let typeClass = item.type === 'Deposit' ? 'deposit positive' : 'withdraw negative';
-            let sign = item.type === 'Deposit' ? '+' : '-';
+            let dateStr = d.toLocaleDateString('th-TH', { day: '2-digit', month: 'short', year: '2-digit' }) + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit', minute:'2-digit'});
+            
+            let isDep = item.type === 'Deposit';
+            let mainClass = isDep ? 'deposit' : 'withdraw';
+            let textClass = isDep ? 'positive' : 'negative';
+            let sign = isDep ? '+' : '-';
+            let icon = isDep ? '↓' : '↑'; // Icon ลูกศรเข้า/ออก
+            let typeTh = isDep ? 'ฝาก' : 'ถอน';
             
             html += `
-            <div class="list-item ${item.type.toLowerCase()}">
-                <div class="item-main">
-                    <div class="item-title ${typeClass}">${item.type} ${item.currency}</div>
-                    <div class="item-date">${dateStr}</div>
-                    ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
+            <div class="list-item ${mainClass}">
+                <div class="item-left">
+                    <div class="item-icon-wrapper">${icon}</div>
+                    <div class="item-main">
+                        <div class="item-title">${typeTh} ${item.currency}</div>
+                        <div class="item-date">${dateStr}</div>
+                        ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
+                    </div>
                 </div>
                 <div class="item-amount">
-                    <div class="val-foreign ${typeClass}">${sign}${parseFloat(item.amountForeign).toLocaleString()}</div>
-                    <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString()} (เรท ${item.rate})</div>
+                    <div class="val-foreign ${textClass}">${sign}${parseFloat(item.amountForeign).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
+                    <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
                 </div>
             </div>`;
         });
@@ -314,19 +479,18 @@
 
         fetch(SCRIPT_URL, {
             method: 'POST',
-            // 🔥 ส่งเป็น text/plain เพื่อเลี่ยงปัญหากับ GAS ทำให้บันทึกได้ 100%
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
         })
         .then(res => res.json())
         .then(data => {
             if(data.status === 'success'){
-                alert('✅ บันทึกข้อมูลเรียบร้อย!');
+                // ล้างฟอร์มแล้วกลับไปหน้าแรก
                 document.getElementById('forexForm').reset();
                 showDashboard();
-                loadData(); // รีเฟรชข้อมูลล่าสุดมาแสดงทันที
+                loadData(); // รีเฟรชข้อมูล
             } else {
-                alert('❌ เกิดข้อผิดพลาดจากเซิร์ฟเวอร์: ' + data.message);
+                alert('❌ เกิดข้อผิดพลาด: ' + data.message);
             }
         })
         .catch(err => alert('❌ Error: ' + err))
