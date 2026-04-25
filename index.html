@@ -25,6 +25,7 @@
         * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
+        /* ขยายจอให้กว้างขึ้นสำหรับ PC */
         .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 90px; }
 
         /* Login */
@@ -61,17 +62,22 @@
             background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px 10px; border-radius: 16px; 
             text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
         }
-        .profit-card { border-color: var(--primary); box-shadow: 0 4px 15px var(--primary-glow); }
+        
+        /* กำหนดลำดับเริ่มต้นสำหรับ PC */
+        .deposit-card { order: 1; }
+        .withdraw-card { order: 2; }
+        .profit-card { order: 3; border-color: var(--primary); box-shadow: 0 4px 15px var(--primary-glow); }
+        
         .top-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
         .top-value { font-size: 24px; font-weight: 600; }
 
-        /* Responsive สำหรับ Top Cards เมื่อหน้าจอแคบ */
+        /* Responsive สำหรับมือถือ: เอากำไรไว้บนสุด */
         @media (max-width: 600px) {
             .top-summary-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .profit-card { grid-column: span 2; }
+            .profit-card { order: -1; grid-column: span 2; } /* ย้ายขึ้นบนสุด และกางเต็มจอ */
         }
 
-        /* Currency Sub Cards (ตัด USD ออกเหลือ 2 อัน) */
+        /* Currency Sub Cards */
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
         .dash-card { 
             background: var(--surface-dark); padding: 15px 12px; border-radius: 14px; 
@@ -81,15 +87,18 @@
         .dash-value { font-size: 18px; font-weight: 600; }
         .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
         
-        /* สถิติย่อย ฝาก/ถอน ภายในบัตรสกุลเงิน */
+        /* สถิติย่อย ฝาก/ถอน แบ่ง 2 แถว */
         .dash-stats {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; flex-direction: column; gap: 6px;
             margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
-            font-size: 11px;
+            font-size: 12px;
         }
-        .stat-label { color: var(--text-muted); margin-right: 4px; }
+        .dash-stats > div {
+            display: flex; justify-content: space-between; width: 100%;
+        }
+        .stat-label { color: var(--text-muted); font-weight: 500; }
 
-        /* 🔥 ปุ่ม เปิด/ปิด ตัวกรองข้อมูล */
+        /* ปุ่ม เปิด/ปิด ตัวกรองข้อมูล */
         .toggle-filter-btn {
             background: var(--surface-dark); border: 1px solid var(--border); color: var(--text-main);
             width: 100%; padding: 12px 15px; border-radius: 12px; font-size: 15px;
@@ -98,7 +107,7 @@
         }
         .toggle-filter-btn:hover { background: var(--surface-hover); }
 
-        /* Controls Panel (ตัวกรอง) */
+        /* Controls Panel (ตัวกรองใหญ่) */
         .controls-panel { 
             background: var(--surface-dark); padding: 15px; border-radius: 14px; 
             border: 1px solid var(--border); margin-bottom: 25px; display: flex; flex-direction: column; gap: 12px; 
@@ -187,11 +196,11 @@
         </div>
         
         <div class="top-summary-grid">
-            <div class="top-card">
+            <div class="top-card deposit-card">
                 <div class="top-title">ยอดฝากรวม (THB)</div>
                 <div class="top-value negative" id="total-deposit-thb">0.00</div>
             </div>
-            <div class="top-card">
+            <div class="top-card withdraw-card">
                 <div class="top-title">ยอดถอนรวม (THB)</div>
                 <div class="top-value positive" id="total-withdraw-thb">0.00</div>
             </div>
@@ -207,8 +216,8 @@
                 <div class="dash-value" id="sum-gbp-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-gbp-thb">฿0.00</div>
                 <div class="dash-stats">
-                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-gbp-dep">-0.00</span></div>
-                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-gbp-wid">+0.00</span></div>
+                    <div><span class="stat-label">ฝากเงิน (ออก):</span><span class="negative" id="sum-gbp-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอนเงิน (เข้า):</span><span class="positive" id="sum-gbp-wid">+0.00</span></div>
                 </div>
             </div>
             <div class="dash-card">
@@ -216,8 +225,8 @@
                 <div class="dash-value" id="sum-eur-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-eur-thb">฿0.00</div>
                 <div class="dash-stats">
-                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-eur-dep">-0.00</span></div>
-                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-eur-wid">+0.00</span></div>
+                    <div><span class="stat-label">ฝากเงิน (ออก):</span><span class="negative" id="sum-eur-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอนเงิน (เข้า):</span><span class="positive" id="sum-eur-wid">+0.00</span></div>
                 </div>
             </div>
         </div>
@@ -269,22 +278,27 @@
                     <option value="100">แสดง 100 รายการ</option>
                     <option value="all">แสดงทั้งหมด</option>
                 </select>
-                <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
+                <button class="btn-outline" onclick="clearFilter()">รีเซ็ตตัวกรอง</button>
             </div>
         </div>
 
         <div class="section-header">
             <h3 class="section-title">ประวัติรายการ</h3>
-            <select id="sortOrder" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px;">
-                <option value="date-desc">เวลา (ล่าสุด - เก่าสุด)</option>
-                <option value="date-asc">เวลา (เก่าสุด - ล่าสุด)</option>
-                <option value="amt-desc">จำนวนเงิน (มาก - น้อย)</option>
-                <option value="amt-asc">จำนวนเงิน (น้อย - มาก)</option>
-                <option value="curr-asc">สกุลเงิน (A - Z)</option>
-                <option value="curr-desc">สกุลเงิน (Z - A)</option>
-                <option value="type-dep">เฉพาะรายการฝาก</option>
-                <option value="type-wid">เฉพาะรายการถอน</option>
-            </select>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <select id="filterType" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px; border-radius: 8px;">
+                    <option value="all">ทั้งหมด (ฝาก/ถอน)</option>
+                    <option value="Deposit">เฉพาะรายการฝาก (เงินออก)</option>
+                    <option value="Withdraw">เฉพาะรายการถอน (เงินเข้า)</option>
+                </select>
+                <select id="sortOrder" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px; border-radius: 8px;">
+                    <option value="date-desc">เรียง: ล่าสุด - เก่าสุด</option>
+                    <option value="date-asc">เรียง: เก่าสุด - ล่าสุด</option>
+                    <option value="amt-desc">เรียง: จำนวนเงิน (มาก - น้อย)</option>
+                    <option value="amt-asc">เรียง: จำนวนเงิน (น้อย - มาก)</option>
+                    <option value="curr-asc">เรียง: สกุลเงิน (A - Z)</option>
+                    <option value="curr-desc">เรียง: สกุลเงิน (Z - A)</option>
+                </select>
+            </div>
         </div>
 
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
@@ -428,7 +442,6 @@
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
-        // ตั้งค่าเวลาเดิมลงใน Flatpickr
         datePicker.setDate(new Date(item.date));
         
         document.getElementById('currency').value = item.currency;
@@ -487,6 +500,7 @@
         document.getElementById('endDate').value = ''; 
         document.getElementById('limitRows').value = '30';
         document.getElementById('sortOrder').value = 'date-desc'; 
+        document.getElementById('filterType').value = 'all'; // คืนค่าประเภท
         filterData(); 
     }
 
@@ -498,6 +512,7 @@
         const end = document.getElementById('endDate').value; 
         const limit = document.getElementById('limitRows').value;
         const sortOrder = document.getElementById('sortOrder').value; 
+        const filterType = document.getElementById('filterType').value; 
         
         // 1. กรองข้อมูล
         let filtered = allData.filter(item => {
@@ -516,22 +531,19 @@
                 const endD = new Date(end); endD.setHours(23,59,59,999);
                 if(d.getTime() > endD.getTime()) return false;
             }
+            
+            // กรองประเภทรายการ
+            if(filterType !== 'all' && item.type !== filterType) return false;
+
             return true;
         });
-
-        // 🔥 กรองประเภทรายการ (กรณีเลือกจาก Dropdown)
-        if (sortOrder === 'type-dep') {
-            filtered = filtered.filter(item => item.type === 'Deposit');
-        } else if (sortOrder === 'type-wid') {
-            filtered = filtered.filter(item => item.type === 'Withdraw');
-        }
 
         // คำนวณสรุปยอดจากการกรอง
         renderSummary(filtered);
         
         // 2. จัดเรียงข้อมูล (Sorting)
         filtered.sort((a, b) => {
-            if (sortOrder === 'date-desc' || sortOrder === 'type-dep' || sortOrder === 'type-wid') {
+            if (sortOrder === 'date-desc') {
                 return new Date(b.date) - new Date(a.date);
             } else if (sortOrder === 'date-asc') {
                 return new Date(a.date) - new Date(b.date);
