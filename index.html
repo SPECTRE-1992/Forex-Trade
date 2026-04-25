@@ -96,6 +96,7 @@
         .val-foreign { font-weight: 600; font-size: 14px; }
         .val-thb { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         
+        /* แก้ไขปุ่ม ให้อยู่มุมขวาและบังคับไม่ให้คำตกบรรทัด */
         .item-actions { 
             display: flex; flex-direction: column; gap: 6px; 
             padding-left: 10px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
@@ -103,7 +104,8 @@
         .action-btn { 
             background: transparent; border: 1px solid var(--border); color: var(--text-muted); 
             padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; 
-            margin: 0; width: 55px; text-align: center;
+            margin: 0; width: auto; min-width: 65px; text-align: center;
+            white-space: nowrap; /* 🔥 จุดสำคัญ: ป้องกันคำว่า แก้ไข ตกบรรทัด */
         }
         .action-btn.edit:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
         .action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
@@ -176,13 +178,24 @@
                 </select>
                 <select id="filterMonth" onchange="filterData()">
                     <option value="">เดือน</option>
-                    <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option><option value="3">มีนาคม</option>
-                    <option value="4">เมษายน</option><option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
-                    <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option><option value="9">กันยายน</option>
-                    <option value="10">ตุลาคม</option><option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
+                    <option value="1">มกราคม</option>
+                    <option value="2">กุมภาพันธ์</option>
+                    <option value="3">มีนาคม</option>
+                    <option value="4">เมษายน</option>
+                    <option value="5">พฤษภาคม</option>
+                    <option value="6">มิถุนายน</option>
+                    <option value="7">กรกฎาคม</option>
+                    <option value="8">สิงหาคม</option>
+                    <option value="9">กันยายน</option>
+                    <option value="10">ตุลาคม</option>
+                    <option value="11">พฤศจิกายน</option>
+                    <option value="12">ธันวาคม</option>
                 </select>
                 <select id="filterYear" onchange="filterData()">
-                    <option value="">ปี</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
+                    <option value="">ปี</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
                 </select>
             </div>
             <div class="controls-row">
@@ -192,16 +205,21 @@
             </div>
             <div class="controls-row">
                 <select id="limitRows" onchange="filterData()">
-                    <option value="30">แสดง 30 รายการ</option><option value="50">แสดง 50 รายการ</option>
-                    <option value="100">แสดง 100 รายการ</option><option value="all">แสดงทั้งหมด</option>
+                    <option value="30">แสดง 30 รายการ</option>
+                    <option value="50">แสดง 50 รายการ</option>
+                    <option value="100">แสดง 100 รายการ</option>
+                    <option value="all">แสดงทั้งหมด</option>
                 </select>
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
             </div>
         </div>
 
         <h3 class="section-title">ประวัติรายการ</h3>
+
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
+        
         <div class="list-container" id="transaction-list"></div>
+
         <button class="fab" onclick="showForm()">+</button>
     </div>
 
@@ -212,16 +230,19 @@
         </div>
         <form id="forexForm">
             <label>วันที่/เวลา</label>
-            <input type="datetime-local" id="txDate" required>
+            <input type="datetime-local" id="txDate" lang="en-GB" required>
 
             <label>สกุลเงิน</label>
             <select id="currency">
-                <option value="GBP">GBP</option><option value="EUR">EUR</option><option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
             </select>
 
             <label>ประเภท</label>
             <select id="type">
-                <option value="Deposit">ฝาก (Deposit)</option><option value="Withdraw">ถอน (Withdraw)</option>
+                <option value="Deposit">ฝาก (Deposit)</option>
+                <option value="Withdraw">ถอน (Withdraw)</option>
             </select>
 
             <label>จำนวนเงินต่างประเทศ</label>
@@ -250,7 +271,7 @@
     const SESSION_DAYS = 5;
     let editingRowNumber = null;
 
-    // 🔥 ฟังก์ชันแปลงเวลาที่เสถียรที่สุดเพื่อหลีกเลี่ยง Timezone Offset อัตโนมัติ
+    // ฟังก์ชันสร้าง Format วันที่ให้ช่อง Input (หลีกเลี่ยง Timezone Shift)
     function formatLocalToInput(d) {
         const year = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -330,7 +351,6 @@
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
-        // แปลงวันที่สำหรับแก้ไขโดยใช้ฟังก์ชันแบบ Manual หลีกเลี่ยง Timezone Shift
         const d = new Date(item.date);
         document.getElementById('txDate').value = formatLocalToInput(d);
         
@@ -497,7 +517,6 @@
         const loading = document.getElementById('form-loading');
         btn.style.display = 'none'; loading.style.display = 'block';
 
-        // 🔥 แนบท้าย +07:00 เสมอ เพื่อบังคับให้ Google บันทึกเป็นเวลาไทย (ป้องกันการเลื่อน 12 ชั่วโมง)
         const rawDate = document.getElementById('txDate').value;
         const payloadDate = rawDate + ":00+07:00"; 
 
