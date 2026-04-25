@@ -12,8 +12,8 @@
             --surface-hover: #334155;
             --primary: #818cf8;
             --primary-glow: rgba(129, 140, 248, 0.4);
-            --secondary: #34d399;
-            --error: #f87171;
+            --secondary: #34d399; /* สีเขียวสำหรับค่าบวก */
+            --error: #f87171;     /* สีแดงสำหรับค่าลบ */
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
@@ -73,7 +73,7 @@
         .dash-title { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
         .dash-value { font-size: 16px; font-weight: 600; }
 
-        /* Controls Panel (กางออกมาให้หมด) */
+        /* Controls Panel */
         .controls-panel {
             background: var(--surface-dark); padding: 15px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px; display: flex; flex-direction: column; gap: 10px;
         }
@@ -102,8 +102,8 @@
         .val-foreign { font-weight: 600; font-size: 15px; }
         .val-thb { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         
-        .positive { color: var(--secondary); }
-        .negative { color: var(--error); }
+        .positive { color: var(--secondary) !important; }
+        .negative { color: var(--error) !important; }
         
         .loading { text-align: center; color: var(--primary); display: none; padding: 20px; font-weight: 500; font-size: 14px; }
         .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(129,140,248,0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
@@ -139,9 +139,9 @@
         </div>
         
         <div class="dash-grid" id="summary-cards">
-            <div class="dash-card"><div class="dash-title">GBP</div><div class="dash-value" id="sum-gbp">0.00</div></div>
-            <div class="dash-card"><div class="dash-title">EUR</div><div class="dash-value" id="sum-eur">0.00</div></div>
-            <div class="dash-card"><div class="dash-title">USD</div><div class="dash-value" id="sum-usd">0.00</div></div>
+            <div class="dash-card"><div class="dash-title">GBP (THB)</div><div class="dash-value" id="sum-gbp">0.00</div></div>
+            <div class="dash-card"><div class="dash-title">EUR (THB)</div><div class="dash-value" id="sum-eur">0.00</div></div>
+            <div class="dash-card"><div class="dash-title">USD (THB)</div><div class="dash-value" id="sum-usd">0.00</div></div>
         </div>
 
         <div class="controls-panel">
@@ -309,12 +309,15 @@
             .then(res => res.json())
             .then(res => {
                 if(res.status === 'success') {
-                    allData = res.data;
-                    filterData(); 
+                    allData = res.data || [];
                 }
             })
             .catch(err => console.error(err))
-            .finally(() => document.getElementById('dash-loading').style.display = 'none');
+            .finally(() => {
+                // แก้บั๊กก่อนรีเซ็ตไม่เหมือนหลังรีเซ็ต: บังคับวาดหน้าจอเสมอแม้ดึงข้อมูลแล้วว่างเปล่า
+                document.getElementById('dash-loading').style.display = 'none';
+                filterData(); 
+            });
     }
 
     function clearFilter() {
@@ -339,12 +342,10 @@
             if(!item.date) return false;
             const d = new Date(item.date);
             
-            // เช็ค Dropdown วัน เดือน ปี
             if(selDay && d.getDate().toString() !== selDay) return false;
             if(selMonth && (d.getMonth() + 1).toString() !== selMonth) return false;
             if(selYear && d.getFullYear().toString() !== selYear) return false;
 
-            // เช็คกำหนดช่วงเอง (Start - End)
             const itemTime = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
             if (start) {
                 const startD = new Date(start);
@@ -376,10 +377,12 @@
         if(Array.isArray(data)) {
             data.forEach(item => {
                 const currency = item.currency ? item.currency.trim().toUpperCase() : '';
-                const amt = parseFloat(item.amountForeign) || 0;
+                // ⚠️ แก้เป็นบวกลบยอด THB ตามสั่ง
+                const amtTHB = parseFloat(item.amountTHB) || 0; 
+                
                 if(sums[currency] !== undefined) {
-                    if(item.type === "Deposit") sums[currency] += amt;
-                    if(item.type === "Withdraw") sums[currency] -= amt;
+                    if(item.type === "Deposit") sums[currency] += amtTHB;
+                    if(item.type === "Withdraw") sums[currency] -= amtTHB;
                 }
             });
         }
@@ -391,7 +394,8 @@
             
             const el = document.getElementById(`sum-${curr.toLowerCase()}`);
             if(el) {
-                el.innerText = `${sign}${net.toFixed(2)}`;
+                // ใส่ลูกน้ำและทศนิยม 2 ตำแหน่งให้ดูง่าย
+                el.innerText = `${sign}${net.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
                 el.className = `dash-value ${cssClass}`;
             }
         });
@@ -424,8 +428,8 @@
                         </div>
                     </div>
                     <div class="item-amount">
-                        <div class="val-foreign ${textClass}">${sign}${parseFloat(item.amountForeign).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
-                        <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
+                        <div class="val-foreign ${textClass}">${sign}${parseFloat(item.amountForeign).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                        <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                     </div>
                 </div>`;
             });
