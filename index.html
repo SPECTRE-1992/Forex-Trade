@@ -23,96 +23,98 @@
             display: flex;
             justify-content: center;
         }
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
-        /* Card Style */
+        .container { width: 100%; max-width: 550px; }
         .card {
             background-color: var(--surface-dark);
             border-radius: 16px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.5);
             margin-bottom: 20px;
         }
         h2, h3 { text-align: center; margin-top: 0; color: var(--primary); }
         
-        /* Inputs & Buttons */
         input, select {
-            width: 100%;
-            padding: 14px;
-            margin-top: 8px;
-            margin-bottom: 16px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            background-color: #2c2c2c;
-            color: white;
-            box-sizing: border-box;
-            font-size: 16px;
+            width: 100%; padding: 12px; margin-top: 5px; margin-bottom: 15px;
+            border: 1px solid #444; border-radius: 8px;
+            background-color: #2c2c2c; color: white; box-sizing: border-box; font-size: 16px;
         }
+        label { font-size: 14px; color: var(--text-muted); }
+        
         button {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+            width: 100%; padding: 14px; background-color: var(--primary); color: #000;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px;
         }
         button:hover { background-color: #9965f4; }
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            margin-top: 10px;
-        }
+        .btn-outline { background-color: transparent; border: 1px solid var(--primary); color: var(--primary); }
         
-        /* Sections */
         #app-section, #form-section { display: none; }
         
-        /* Dashboard Grid */
-        .dash-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
+        /* Dashboard Layout */
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .filter-box { display: flex; gap: 10px; margin-bottom: 20px; align-items: center;}
+        .filter-box input[type="month"] { margin-bottom: 0; padding: 10px; }
+        .filter-box button { margin-top: 0; width: auto; padding: 10px 15px; font-size: 14px; }
+        
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .dash-card { background: #2a2a2a; padding: 15px; border-radius: 10px; text-align: center; }
+        .dash-title { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        .dash-value { font-size: 18px; font-weight: bold; }
+        
+        /* List Items */
+        .list-container { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .list-item { 
+            background: #252525; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid var(--primary);
         }
-        .dash-card {
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid var(--secondary);
-        }
-        .dash-title { font-size: 14px; color: var(--text-muted); }
-        .dash-value { font-size: 28px; font-weight: bold; margin-top: 5px; }
+        .list-item.deposit { border-left-color: var(--secondary); }
+        .list-item.withdraw { border-left-color: var(--error); }
+        
+        .item-main { display: flex; flex-direction: column; }
+        .item-title { font-weight: bold; font-size: 15px; }
+        .item-date { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+        .item-note { font-size: 11px; color: #888; margin-top: 3px; }
+        
+        .item-amount { text-align: right; }
+        .val-foreign { font-weight: bold; font-size: 15px; }
+        .val-thb { font-size: 12px; color: var(--text-muted); }
         .positive { color: var(--secondary); }
         .negative { color: var(--error); }
         
-        .loading { text-align: center; color: var(--text-muted); display: none; }
+        .loading { text-align: center; color: var(--text-muted); display: none; padding: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-
     <div id="login-section" class="card">
-        <h2>🔒 Login</h2>
-        <input type="password" id="password" placeholder="Enter Password">
+        <h2>🔒 เข้าสู่ระบบ</h2>
+        <input type="password" id="password" placeholder="Enter Password (กด Enter ได้เลย)" onkeypress="handleLoginKey(event)">
         <button onclick="checkLogin()">เข้าสู่ระบบ</button>
-        <p id="login-error" style="color: var(--error); text-align: center; display: none;">รหัสผ่านไม่ถูกต้อง!</p>
+        <p id="login-error" style="color: var(--error); text-align: center; display: none; font-size: 14px;">รหัสผ่านไม่ถูกต้อง!</p>
     </div>
 
     <div id="app-section">
         <div class="card">
-            <h2>📊 Dashboard</h2>
-            <div id="dash-loading" class="loading" style="display: block;">⏳ กำลังโหลดข้อมูล...</div>
-            <div id="dash-content" class="dash-grid">
+            <div class="header-flex">
+                <h2 style="margin: 0;">📊 Dashboard</h2>
+                <button onclick="showForm()" style="width: auto; padding: 8px 15px; margin: 0; font-size: 14px;">+ เพิ่มรายการ</button>
+            </div>
+            
+            <div class="filter-box">
+                <label>กรองเดือน:</label>
+                <input type="month" id="monthFilter" onchange="filterData()">
+                <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
+            </div>
+
+            <div class="dash-grid" id="summary-cards">
                 </div>
-            <button onclick="showForm()" style="margin-top: 20px;">+ เพิ่มรายการใหม่</button>
-            <button onclick="loadDashboard()" class="btn-outline">🔄 รีเฟรชข้อมูล</button>
+
+            <h3 style="text-align: left; font-size: 16px; color: #fff;">ประวัติรายการ</h3>
+            <div id="dash-loading" class="loading">⏳ กำลังโหลดข้อมูล...</div>
+            
+            <div class="list-container" id="transaction-list">
+                </div>
         </div>
     </div>
 
@@ -121,9 +123,9 @@
         <form id="forexForm">
             <label>สกุลเงิน</label>
             <select id="currency">
-                <option value="USD">USD</option>
                 <option value="GBP">GBP</option>
                 <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
             </select>
 
             <label>ประเภท</label>
@@ -132,10 +134,13 @@
                 <option value="Withdraw">ถอน (Withdraw)</option>
             </select>
 
-            <label>จำนวนเงินต่างประเทศ</label>
+            <label>จำนวนเงินต่างประเทศ (Foreign Amount)</label>
             <input type="number" id="amountForeign" step="0.01" required>
 
-            <label>จำนวนเงินบาท (THB)</label>
+            <label>อัตราแลกเปลี่ยน (Exchange Rate)</label>
+            <input type="number" id="rate" step="0.0001" placeholder="เช่น 45.50" required>
+
+            <label>จำนวนเงินบาท (THB) - <span style="color:var(--secondary);font-size:12px;">คำนวณอัตโนมัติ</span></label>
             <input type="number" id="amountTHB" step="0.01" required>
 
             <label>หมายเหตุ</label>
@@ -146,75 +151,147 @@
             <div id="form-loading" class="loading" style="margin-top: 15px;">⏳ กำลังบันทึกข้อมูล...</div>
         </form>
     </div>
-
 </div>
 
 <script>
-    // ** เปลี่ยน URL ตรงนี้เป็น URL ใหม่ที่ได้จากการ Deploy GAS ล่าสุด **
+    // 🚨🚨🚨 นำ URL ของ Web App อันใหม่ที่เพิ่ง Deploy มาใส่ตรงนี้ 🚨🚨🚨
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDtIhfDFcfgvwdG2OvbUjJ9hYq3mH8795ZSW31x4SJs_F01-wZzyxMj3iUf6J6Gso/exec';
 
-    // --- Navigation Functions ---
+    let allData = []; // เก็บข้อมูลทั้งหมด
+
+    // --- Login Logic ---
+    function handleLoginKey(e) { if(e.key === 'Enter') checkLogin(); }
+    
     function checkLogin() {
         const pass = document.getElementById('password').value;
         if (pass === 'spectre') {
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('app-section').style.display = 'block';
-            loadDashboard(); // โหลดข้อมูลทันทีที่ล็อคอินผ่าน
+            loadData();
         } else {
             document.getElementById('login-error').style.display = 'block';
         }
     }
 
+    // --- Navigation ---
     function showForm() {
         document.getElementById('app-section').style.display = 'none';
         document.getElementById('form-section').style.display = 'block';
     }
-
     function showDashboard() {
         document.getElementById('form-section').style.display = 'none';
         document.getElementById('app-section').style.display = 'block';
-        loadDashboard();
     }
 
-    // --- Load Dashboard Data ---
-    function loadDashboard() {
-        document.getElementById('dash-loading').style.display = 'block';
-        document.getElementById('dash-content').innerHTML = '';
+    // --- Auto Calculate THB ---
+    const amtF = document.getElementById('amountForeign');
+    const inputRate = document.getElementById('rate');
+    const amtTHB = document.getElementById('amountTHB');
 
+    function calculate() {
+        if(amtF.value && inputRate.value) {
+            amtTHB.value = (parseFloat(amtF.value) * parseFloat(inputRate.value)).toFixed(2);
+        }
+    }
+    amtF.addEventListener('input', calculate);
+    inputRate.addEventListener('input', calculate);
+
+    // --- Load Data ---
+    function loadData() {
+        document.getElementById('dash-loading').style.display = 'block';
+        document.getElementById('transaction-list').innerHTML = '';
+        
         fetch(SCRIPT_URL)
             .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    renderDashboard(data.data);
+            .then(res => {
+                if(res.status === 'success') {
+                    allData = res.data;
+                    filterData(); // แสดงผลทั้งหมดตอนแรก
                 }
             })
             .catch(err => console.error(err))
-            .finally(() => {
-                document.getElementById('dash-loading').style.display = 'none';
-            });
+            .finally(() => document.getElementById('dash-loading').style.display = 'none');
     }
 
-    function renderDashboard(data) {
-        const container = document.getElementById('dash-content');
-        let html = '';
+    // --- Filter & Render Data ---
+    function clearFilter() {
+        document.getElementById('monthFilter').value = '';
+        filterData();
+    }
+
+    function filterData() {
+        const filterVal = document.getElementById('monthFilter').value; // format: "YYYY-MM"
+        let filtered = allData;
+
+        if(filterVal) {
+            filtered = allData.filter(item => {
+                if(!item.date) return false;
+                const d = new Date(item.date);
+                const yyyy = d.getFullYear();
+                let mm = d.getMonth() + 1;
+                if(mm < 10) mm = '0' + mm;
+                return `${yyyy}-${mm}` === filterVal;
+            });
+        }
         
-        ['USD', 'GBP', 'EUR'].forEach(curr => {
-            let net = data[curr].net;
-            let netClass = net >= 0 ? 'positive' : 'negative';
-            let sign = net >= 0 ? '+' : '';
-            
+        renderSummary(filtered);
+        renderList(filtered);
+    }
+
+    function renderSummary(data) {
+        let sums = { 
+            "GBP": { net: 0 }, "EUR": { net: 0 }, "USD": { net: 0 } 
+        };
+        
+        data.forEach(item => {
+            const amt = parseFloat(item.amountForeign) || 0;
+            if(sums[item.currency]) {
+                if(item.type === "Deposit") sums[item.currency].net += amt;
+                if(item.type === "Withdraw") sums[item.currency].net -= amt;
+            }
+        });
+
+        let html = '';
+        ['GBP', 'EUR', 'USD'].forEach(curr => {
+            let net = sums[curr].net;
+            let cssClass = net >= 0 ? 'positive' : 'negative';
+            let sign = net > 0 ? '+' : '';
             html += `
-            <div class="dash-card">
-                <div class="dash-title">Net Balance (${curr})</div>
-                <div class="dash-value ${netClass}">${sign}${net.toFixed(2)}</div>
-                <div style="font-size: 12px; color: #888; margin-top: 5px;">
-                    Deposit: ${data[curr].deposit.toFixed(2)} | Withdraw: ${data[curr].withdraw.toFixed(2)}
+                <div class="dash-card">
+                    <div class="dash-title">${curr} Net</div>
+                    <div class="dash-value ${cssClass}">${sign}${net.toFixed(2)}</div>
                 </div>
-            </div>
             `;
         });
-        
-        container.innerHTML = html;
+        document.getElementById('summary-cards').innerHTML = html;
+    }
+
+    function renderList(data) {
+        let html = '';
+        if(data.length === 0) {
+            html = '<div style="text-align:center; color:#888; padding:20px;">ไม่มีข้อมูลในเดือนนี้</div>';
+        }
+
+        data.forEach(item => {
+            let d = new Date(item.date);
+            let dateStr = d.toLocaleDateString('th-TH') + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit', minute:'2-digit'});
+            let typeClass = item.type === 'Deposit' ? 'deposit positive' : 'withdraw negative';
+            let sign = item.type === 'Deposit' ? '+' : '-';
+            
+            html += `
+            <div class="list-item ${item.type.toLowerCase()}">
+                <div class="item-main">
+                    <div class="item-title ${typeClass}">${item.type} ${item.currency}</div>
+                    <div class="item-date">${dateStr}</div>
+                    ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
+                </div>
+                <div class="item-amount">
+                    <div class="val-foreign ${typeClass}">${sign}${parseFloat(item.amountForeign).toLocaleString()}</div>
+                    <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString()} (เรท ${item.rate})</div>
+                </div>
+            </div>`;
+        });
+        document.getElementById('transaction-list').innerHTML = html;
     }
 
     // --- Submit Form Data ---
@@ -230,20 +307,27 @@
             currency: document.getElementById('currency').value,
             type: document.getElementById('type').value,
             amountForeign: document.getElementById('amountForeign').value,
+            rate: document.getElementById('rate').value,
             amountTHB: document.getElementById('amountTHB').value,
             note: document.getElementById('note').value
         };
 
         fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
+            // 🔥 ส่งเป็น text/plain เพื่อเลี่ยงปัญหากับ GAS ทำให้บันทึกได้ 100%
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
         })
-        .then(() => {
-            alert('✅ บันทึกข้อมูลเรียบร้อย!');
-            document.getElementById('forexForm').reset();
-            showDashboard(); // กลับไปหน้าแดชบอร์ด
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === 'success'){
+                alert('✅ บันทึกข้อมูลเรียบร้อย!');
+                document.getElementById('forexForm').reset();
+                showDashboard();
+                loadData(); // รีเฟรชข้อมูลล่าสุดมาแสดงทันที
+            } else {
+                alert('❌ เกิดข้อผิดพลาดจากเซิร์ฟเวอร์: ' + data.message);
+            }
         })
         .catch(err => alert('❌ Error: ' + err))
         .finally(() => {
