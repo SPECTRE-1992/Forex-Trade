@@ -73,37 +73,39 @@
         /* Transaction List */
         .section-title { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; margin-top: 0; }
         .list-container { display: flex; flex-direction: column; gap: 10px; }
+        
+        /* ปรับ Layout รายการใหม่ ประหยัดพื้นที่ */
         .list-item { 
-            background: var(--surface-dark); border-radius: 12px; padding: 14px; 
-            display: flex; flex-direction: column; border: 1px solid transparent; 
+            background: var(--surface-dark); border-radius: 12px; padding: 12px; 
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
         }
-        .item-row-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         
         .item-icon-wrapper { 
             width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; 
-            font-size: 16px; margin-right: 12px; flex-shrink: 0; 
+            font-size: 16px; margin-right: 10px; flex-shrink: 0; 
         }
         .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
         .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
 
         .item-left { display: flex; align-items: center; flex: 1; overflow: hidden; }
         .item-main { display: flex; flex-direction: column; }
-        .item-title { font-weight: 600; font-size: 14px; }
-        .item-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .item-note { font-size: 11px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+        .item-title { font-weight: 600; font-size: 13px; }
+        .item-date { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .item-note { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
         
         .item-amount { text-align: right; flex-shrink: 0; }
         .val-foreign { font-weight: 600; font-size: 14px; }
         .val-thb { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         
-        /* ปุ่มแก้ไข/ลบ */
+        /* ปุ่มแก้ไข/ลบ ซ้อน 2 แถวไว้มุมขวา */
         .item-actions { 
-            display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; padding-top: 10px; 
-            border-top: 1px solid rgba(255,255,255,0.05); 
+            display: flex; flex-direction: column; gap: 6px; 
+            padding-left: 10px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
         }
         .action-btn { 
             background: transparent; border: 1px solid var(--border); color: var(--text-muted); 
-            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; margin: 0; width: auto;
+            padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; 
+            margin: 0; width: 55px; text-align: center;
         }
         .action-btn.edit:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
         .action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
@@ -241,12 +243,12 @@
 </div>
 
 <script>
-    // 🚨🚨🚨 ใส่ URL Web App ของคุณ (ที่เพิ่งอัปเดต Code.gs ใหม่) 🚨🚨🚨
+    // 🚨🚨🚨 ใส่ URL Web App ของคุณ 🚨🚨🚨
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDtIhfDFcfgvwdG2OvbUjJ9hYq3mH8795ZSW31x4SJs_F01-wZzyxMj3iUf6J6Gso/exec';
 
     let allData = [];
     const SESSION_DAYS = 5;
-    let editingRowNumber = null; // ตัวแปรเก็บสถานะว่ากำลังแก้ไขแถวไหนอยู่
+    let editingRowNumber = null;
 
     function setDefaultDateTime() {
         const now = new Date();
@@ -289,9 +291,8 @@
         loadData();
     }
 
-    // กดปุ่ม + เปิดฟอร์ม (โหมดเพิ่มข้อมูลใหม่)
     function showForm() {
-        editingRowNumber = null; // รีเซ็ตโหมดแก้ไข
+        editingRowNumber = null;
         document.getElementById('form-title').innerText = "บันทึก ฝาก/ถอน";
         document.getElementById('submitBtn').innerText = "บันทึกข้อมูล";
         
@@ -313,17 +314,14 @@
         window.scrollTo(0, 0);
     }
 
-    // --- ระบบแก้ไข/ลบ ---
     function editTransaction(rowNum) {
-        // หาข้อมูลรายการที่ต้องการแก้ไขจาก Array
         const item = allData.find(d => d.rowNumber === rowNum);
         if(!item) return;
 
-        editingRowNumber = rowNum; // เปิดโหมดแก้ไข
+        editingRowNumber = rowNum;
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
-        // เติมข้อมูลเดิมลงในฟอร์ม
         const d = new Date(item.date);
         d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
         document.getElementById('txDate').value = d.toISOString().slice(0,16);
@@ -335,7 +333,6 @@
         document.getElementById('amountTHB').value = item.amountTHB;
         document.getElementById('note').value = item.note || '';
 
-        // สลับไปหน้าฟอร์ม
         document.getElementById('app-section').classList.add('hidden');
         document.getElementById('form-section').classList.remove('hidden');
         window.scrollTo(0, 0);
@@ -344,25 +341,16 @@
     function deleteTransaction(rowNum) {
         if(confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? (ลบแล้วกู้คืนไม่ได้)")) {
             document.getElementById('dash-loading').style.display = 'block';
-            
             const payload = { action: "delete", rowNumber: rowNum };
             
             fetch(SCRIPT_URL, {
-                method: 'POST', 
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success'){
-                    loadData(); // รีโหลดข้อมูลใหม่ทันที
-                } else { alert('❌ ' + data.message); }
-            })
-            .catch(err => { alert('❌ Error: ' + err); document.getElementById('dash-loading').style.display = 'none'; });
+                method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload)
+            }).then(res => res.json()).then(data => {
+                if(data.status === 'success'){ loadData(); } else { alert('❌ ' + data.message); }
+            }).catch(err => { alert('❌ Error: ' + err); document.getElementById('dash-loading').style.display = 'none'; });
         }
     }
 
-    // --- ระบบคำนวณ 2 ทางอัจฉริยะ ---
     const amtF = document.getElementById('amountForeign');
     const inputRate = document.getElementById('rate');
     const amtTHB = document.getElementById('amountTHB');
@@ -374,23 +362,15 @@
     inputRate.addEventListener('input', () => { let f = parseFloat(amtF.value); let r = parseFloat(inputRate.value); if(f && r) { amtTHB.value = (f * r).toFixed(2); }});
     amtTHB.addEventListener('input', () => { let f = parseFloat(amtF.value); let t = parseFloat(amtTHB.value); if(f && t) { inputRate.value = (t / f).toFixed(4); }});
 
-    // --- โหลดข้อมูล ---
     function loadData() {
         document.getElementById('dash-loading').style.display = 'block';
         document.getElementById('transaction-list').innerHTML = '';
         
         fetch(SCRIPT_URL)
             .then(res => res.json())
-            .then(res => {
-                if(res.status === 'success') {
-                    allData = res.data || [];
-                }
-            })
+            .then(res => { if(res.status === 'success') { allData = res.data || []; } })
             .catch(err => console.error(err))
-            .finally(() => {
-                document.getElementById('dash-loading').style.display = 'none';
-                filterData(); 
-            });
+            .finally(() => { document.getElementById('dash-loading').style.display = 'none'; filterData(); });
     }
 
     function clearFilter() {
@@ -479,26 +459,23 @@
                 let icon = isDep ? '↑' : '↓'; 
                 let typeTh = isDep ? 'ฝาก' : 'ถอน';
                 
-                // สังเกตปุ่ม Item Actions ด้านล่าง
                 html += `
                 <div class="list-item ${mainClass}">
-                    <div class="item-row-top">
-                        <div class="item-left">
-                            <div class="item-icon-wrapper">${icon}</div>
-                            <div class="item-main">
-                                <div class="item-title">${typeTh} ${item.currency}</div>
-                                <div class="item-date">${dateStr}</div>
-                                ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
-                            </div>
-                        </div>
-                        <div class="item-amount">
-                            <div class="val-foreign ${textClass}">${sign}${parseFloat(item.amountForeign).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                            <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <div class="item-left">
+                        <div class="item-icon-wrapper">${icon}</div>
+                        <div class="item-main">
+                            <div class="item-title">${typeTh} ${item.currency}</div>
+                            <div class="item-date">${dateStr}</div>
+                            ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
                         </div>
                     </div>
+                    <div class="item-amount">
+                        <div class="val-foreign ${textClass}">${sign}${parseFloat(item.amountForeign).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                        <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
                     <div class="item-actions">
-                        <button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️ แก้ไข</button>
-                        <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️ ลบ</button>
+                        <button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️</button>
+                        <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️</button>
                     </div>
                 </div>`;
             });
@@ -506,18 +483,15 @@
         document.getElementById('transaction-list').innerHTML = html;
     }
 
-    // --- ส่งข้อมูลเข้า Google Sheets (รวมคำสั่ง Add และ Edit ไว้ในฟอร์มเดียว) ---
     document.getElementById('forexForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
         const btn = document.getElementById('submitBtn');
         const loading = document.getElementById('form-loading');
-        btn.style.display = 'none';
-        loading.style.display = 'block';
+        btn.style.display = 'none'; loading.style.display = 'block';
 
         const payload = {
-            action: editingRowNumber ? "edit" : "add", // เช็คว่ากำลังแก้ไขหรือเพิ่มใหม่
-            rowNumber: editingRowNumber, // แนบเลขแถวไปด้วยกรณีที่เป็นการแก้ไข
+            action: editingRowNumber ? "edit" : "add",
+            rowNumber: editingRowNumber,
             date: new Date(document.getElementById('txDate').value).toISOString(),
             currency: document.getElementById('currency').value,
             type: document.getElementById('type').value,
@@ -527,25 +501,14 @@
             note: document.getElementById('note').value
         };
 
-        fetch(SCRIPT_URL, {
-            method: 'POST', 
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-        })
+        fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
         .then(res => res.json())
         .then(data => {
-            if(data.status === 'success'){
-                editingRowNumber = null; // คืนค่าสถานะกลับเป็นปกติ
-                document.getElementById('forexForm').reset();
-                showDashboard(); 
-                loadData();
-            } else { alert('❌ เกิดข้อผิดพลาด: ' + data.message); }
+            if(data.status === 'success'){ editingRowNumber = null; document.getElementById('forexForm').reset(); showDashboard(); loadData(); } 
+            else { alert('❌ เกิดข้อผิดพลาด: ' + data.message); }
         })
         .catch(err => alert('❌ Error: ' + err))
-        .finally(() => { 
-            btn.style.display = 'block'; 
-            loading.style.display = 'none'; 
-        });
+        .finally(() => { btn.style.display = 'block'; loading.style.display = 'none'; });
     });
 </script>
 
