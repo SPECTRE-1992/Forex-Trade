@@ -63,7 +63,6 @@
             text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
         }
         
-        /* กำหนดลำดับเริ่มต้นสำหรับ PC */
         .deposit-card { order: 1; }
         .withdraw-card { order: 2; }
         .profit-card { order: 3; border-color: var(--primary); box-shadow: 0 4px 15px var(--primary-glow); }
@@ -74,7 +73,7 @@
         /* Responsive สำหรับมือถือ: เอากำไรไว้บนสุด */
         @media (max-width: 600px) {
             .top-summary-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .profit-card { order: -1; grid-column: span 2; } /* ย้ายขึ้นบนสุด และกางเต็มจอ */
+            .profit-card { order: -1; grid-column: span 2; } 
         }
 
         /* Currency Sub Cards */
@@ -117,9 +116,19 @@
         .controls-row button { margin: 0; padding: 10px 16px; font-size: 14px; width: auto; flex-shrink: 0; }
         .separator { color: var(--text-muted); font-size: 14px; }
 
-        /* Transaction List */
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        /* Transaction List Header */
+        .section-header { 
+            display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; 
+        }
         .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
+        
+        /* 🔥 บังคับให้ Dropdown 2 อันเรียงกันบรรทัดเดียวเสมอ */
+        .filter-sort-group {
+            display: flex; gap: 10px; width: 100%;
+        }
+        .filter-sort-group select {
+            margin: 0; padding: 8px 10px; font-size: 13px; border-radius: 8px; flex: 1; /* flex: 1 ทำให้แบ่ง 50-50 */
+        }
         
         .list-container { display: flex; flex-direction: column; gap: 12px; }
         .list-item { 
@@ -284,19 +293,20 @@
 
         <div class="section-header">
             <h3 class="section-title">ประวัติรายการ</h3>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <select id="filterType" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px; border-radius: 8px;">
+            
+            <div class="filter-sort-group">
+                <select id="filterType" onchange="filterData()">
                     <option value="all">ทั้งหมด (ฝาก/ถอน)</option>
-                    <option value="Deposit">เฉพาะรายการฝาก (เงินออก)</option>
-                    <option value="Withdraw">เฉพาะรายการถอน (เงินเข้า)</option>
+                    <option value="Deposit">เฉพาะรายการฝาก</option>
+                    <option value="Withdraw">เฉพาะรายการถอน</option>
                 </select>
-                <select id="sortOrder" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px; border-radius: 8px;">
+                <select id="sortOrder" onchange="filterData()">
                     <option value="date-desc">เรียง: ล่าสุด - เก่าสุด</option>
                     <option value="date-asc">เรียง: เก่าสุด - ล่าสุด</option>
-                    <option value="amt-desc">เรียง: จำนวนเงิน (มาก - น้อย)</option>
-                    <option value="amt-asc">เรียง: จำนวนเงิน (น้อย - มาก)</option>
-                    <option value="curr-asc">เรียง: สกุลเงิน (A - Z)</option>
-                    <option value="curr-desc">เรียง: สกุลเงิน (Z - A)</option>
+                    <option value="amt-desc">เงิน (มาก - น้อย)</option>
+                    <option value="amt-asc">เงิน (น้อย - มาก)</option>
+                    <option value="curr-asc">สกุลเงิน (A - Z)</option>
+                    <option value="curr-desc">สกุลเงิน (Z - A)</option>
                 </select>
             </div>
         </div>
@@ -442,6 +452,7 @@
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
+        // ตั้งค่าเวลาเดิมลงใน Flatpickr
         datePicker.setDate(new Date(item.date));
         
         document.getElementById('currency').value = item.currency;
@@ -500,7 +511,7 @@
         document.getElementById('endDate').value = ''; 
         document.getElementById('limitRows').value = '30';
         document.getElementById('sortOrder').value = 'date-desc'; 
-        document.getElementById('filterType').value = 'all'; // คืนค่าประเภท
+        document.getElementById('filterType').value = 'all'; 
         filterData(); 
     }
 
@@ -566,8 +577,7 @@
     function renderSummary(data) {
         let sums = { 
             "GBP": { f:0, thb:0, depF:0, widF:0 }, 
-            "EUR": { f:0, thb:0, depF:0, widF:0 }, 
-            "USD": { f:0, thb:0, depF:0, widF:0 } 
+            "EUR": { f:0, thb:0, depF:0, widF:0 }
         };
         let grandTotalTHB = 0;
         let totalDepositTHB = 0;
