@@ -19,7 +19,7 @@
         * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        /* 🔥 ขยายจอให้กว้างขึ้นสำหรับ PC */
+        /* ขยายจอให้กว้างขึ้นสำหรับ PC */
         .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 90px; }
 
         /* Login */
@@ -48,14 +48,25 @@
         .app-header h2 { margin: 0; font-size: 20px; color: #fff; }
         .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); width: auto; padding: 6px 14px; font-size: 13px; margin: 0; border-radius: 8px; }
 
-        /* Summary Cards */
-        .total-card { 
-            background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px; border-radius: 16px; 
-            text-align: center; border: 1px solid var(--primary); box-shadow: 0 4px 15px var(--primary-glow); margin-bottom: 20px; 
+        /* Top Summary Cards (ฝาก, ถอน, สุทธิ) */
+        .top-summary-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; 
         }
-        .total-title { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; }
-        .total-value { font-size: 30px; font-weight: 600; }
+        .top-card { 
+            background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px 10px; border-radius: 16px; 
+            text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+        }
+        .profit-card { border-color: var(--primary); box-shadow: 0 4px 15px var(--primary-glow); }
+        .top-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .top-value { font-size: 24px; font-weight: 600; }
 
+        /* Responsive สำหรับ Top Cards เมื่อหน้าจอแคบ (มือถือ) */
+        @media (max-width: 600px) {
+            .top-summary-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .profit-card { grid-column: span 2; } /* ให้กำไรสุทธิกางเต็ม 2 คอลัมน์ */
+        }
+
+        /* Currency Sub Cards */
         .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
         .dash-card { 
             background: var(--surface-dark); padding: 15px 10px; border-radius: 14px; 
@@ -76,7 +87,9 @@
         .separator { color: var(--text-muted); font-size: 14px; }
 
         /* Transaction List */
-        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin-bottom: 15px; margin-top: 0; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
+        
         .list-container { display: flex; flex-direction: column; gap: 12px; }
         
         .list-item { 
@@ -151,9 +164,19 @@
             <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
         </div>
         
-        <div class="total-card">
-            <div class="total-title">กำไร/ขาดทุนสุทธิรวม (THB)</div>
-            <div class="total-value" id="total-profit-thb">0.00</div>
+        <div class="top-summary-grid">
+            <div class="top-card">
+                <div class="top-title">ยอดฝากรวม (THB)</div>
+                <div class="top-value negative" id="total-deposit-thb">0.00</div>
+            </div>
+            <div class="top-card">
+                <div class="top-title">ยอดถอนรวม (THB)</div>
+                <div class="top-value positive" id="total-withdraw-thb">0.00</div>
+            </div>
+            <div class="top-card profit-card">
+                <div class="top-title">กำไร/ขาดทุนสุทธิ (THB)</div>
+                <div class="top-value" id="total-profit-thb">0.00</div>
+            </div>
         </div>
 
         <div class="dash-grid" id="summary-cards">
@@ -198,14 +221,27 @@
             </div>
             <div class="controls-row">
                 <select id="limitRows" onchange="filterData()">
-                    <option value="30">แสดง 30 รายการ</option><option value="50">แสดง 50 รายการ</option>
-                    <option value="100">แสดง 100 รายการ</option><option value="all">แสดงทั้งหมด</option>
+                    <option value="30">แสดง 30 รายการ</option>
+                    <option value="50">แสดง 50 รายการ</option>
+                    <option value="100">แสดง 100 รายการ</option>
+                    <option value="all">แสดงทั้งหมด</option>
                 </select>
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
             </div>
         </div>
 
-        <h3 class="section-title">ประวัติรายการ</h3>
+        <div class="section-header">
+            <h3 class="section-title">ประวัติรายการ</h3>
+            <select id="sortOrder" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px;">
+                <option value="date-desc">เวลา (ล่าสุด - เก่าสุด)</option>
+                <option value="date-asc">เวลา (เก่าสุด - ล่าสุด)</option>
+                <option value="amt-desc">จำนวนเงิน (มาก - น้อย)</option>
+                <option value="amt-asc">จำนวนเงิน (น้อย - มาก)</option>
+                <option value="curr-asc">สกุลเงิน (A - Z)</option>
+                <option value="curr-desc">สกุลเงิน (Z - A)</option>
+            </select>
+        </div>
+
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
         <div class="list-container" id="transaction-list"></div>
         <button class="fab" onclick="showForm()">+</button>
@@ -258,11 +294,10 @@
     const SESSION_DAYS = 5;
     let editingRowNumber = null;
 
-    // 🔥 ติดตั้ง Flatpickr ระบบเวลา 24H
     const datePicker = flatpickr("#txDate", {
         enableTime: true,
         dateFormat: "Y-m-d H:i",
-        time_24hr: true, // บังคับ 24 ชั่วโมง แน่นอน 100%
+        time_24hr: true, 
         defaultDate: new Date()
     });
 
@@ -311,7 +346,7 @@
         document.getElementById('amountTHB').value = '';
         document.getElementById('note').value = '';
         
-        datePicker.setDate(new Date()); // รีเซ็ตเวลาเป็นปัจจุบัน
+        datePicker.setDate(new Date());
 
         document.getElementById('app-section').classList.add('hidden');
         document.getElementById('form-section').classList.remove('hidden');
@@ -332,7 +367,6 @@
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
-        // ตั้งค่าเวลาเดิมลงใน Flatpickr
         datePicker.setDate(new Date(item.date));
         
         document.getElementById('currency').value = item.currency;
@@ -385,13 +419,16 @@
     function clearFilter() {
         document.getElementById('filterDay').value = ''; document.getElementById('filterMonth').value = ''; document.getElementById('filterYear').value = '';
         document.getElementById('startDate').value = ''; document.getElementById('endDate').value = ''; document.getElementById('limitRows').value = '30';
+        document.getElementById('sortOrder').value = 'date-desc'; // คืนค่าตัวเรียงลำดับด้วย
         filterData(); 
     }
 
     function filterData() {
         const selDay = document.getElementById('filterDay').value; const selMonth = document.getElementById('filterMonth').value; const selYear = document.getElementById('filterYear').value;
         const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value; const limit = document.getElementById('limitRows').value;
+        const sortOrder = document.getElementById('sortOrder').value; // ดึงค่าการจัดเรียง
         
+        // 1. กรองข้อมูล
         let filtered = allData.filter(item => {
             if(!item.date) return false;
             const d = new Date(item.date);
@@ -410,14 +447,37 @@
             }
             return true;
         });
-        
+
+        // คำนวณสรุปยอดจากการกรอง
         renderSummary(filtered);
+        
+        // 2. จัดเรียงข้อมูล (Sorting)
+        filtered.sort((a, b) => {
+            if (sortOrder === 'date-desc') {
+                return new Date(b.date) - new Date(a.date);
+            } else if (sortOrder === 'date-asc') {
+                return new Date(a.date) - new Date(b.date);
+            } else if (sortOrder === 'amt-desc') {
+                return parseFloat(b.amountTHB || 0) - parseFloat(a.amountTHB || 0);
+            } else if (sortOrder === 'amt-asc') {
+                return parseFloat(a.amountTHB || 0) - parseFloat(b.amountTHB || 0);
+            } else if (sortOrder === 'curr-asc') {
+                return (a.currency || '').localeCompare(b.currency || '');
+            } else if (sortOrder === 'curr-desc') {
+                return (b.currency || '').localeCompare(a.currency || '');
+            }
+            return 0;
+        });
+
+        // 3. หั่นแถวตามที่กำหนด
         renderList(limit !== 'all' ? filtered.slice(0, parseInt(limit)) : filtered);
     }
 
     function renderSummary(data) {
         let sums = { "GBP": { f:0, thb:0 }, "EUR": { f:0, thb:0 }, "USD": { f:0, thb:0 } };
         let grandTotalTHB = 0;
+        let totalDepositTHB = 0;
+        let totalWithdrawTHB = 0;
         
         if(Array.isArray(data)) {
             data.forEach(item => {
@@ -430,13 +490,28 @@
                     sums[currency].f += isDep ? -amtF : amtF;
                     sums[currency].thb += isDep ? -amtTHB : amtTHB;
                 }
+                
+                // สรุปรวมกำไรสุทธิ
                 grandTotalTHB += isDep ? -amtTHB : amtTHB;
+
+                // แยกยอดฝาก-ถอน (แสดงเป็นค่าบวกทั้งคู่เพื่อความเข้าใจง่าย)
+                if(isDep) {
+                    totalDepositTHB += amtTHB;
+                } else {
+                    totalWithdrawTHB += amtTHB;
+                }
             });
         }
 
+        // อัปเดตการ์ดยอดฝากรวม
+        document.getElementById('total-deposit-thb').innerText = `${totalDepositTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        // อัปเดตการ์ดยอดถอนรวม
+        document.getElementById('total-withdraw-thb').innerText = `${totalWithdrawTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+        // อัปเดตกำไรสุทธิรวม
         const totalCard = document.getElementById('total-profit-thb');
         totalCard.innerText = `${grandTotalTHB > 0 ? '+' : ''}${grandTotalTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        totalCard.className = `total-value ${grandTotalTHB >= 0 ? 'positive' : 'negative'}`;
+        totalCard.className = `top-value ${grandTotalTHB >= 0 ? 'positive' : 'negative'}`;
 
         ['GBP', 'EUR', 'USD'].forEach(curr => {
             let netF = sums[curr].f; let netTHB = sums[curr].thb;
@@ -498,7 +573,6 @@
         const loading = document.getElementById('form-loading');
         btn.style.display = 'none'; loading.style.display = 'block';
 
-        // ดึงค่าจาก Flatpickr แล้วแปลงช่องว่างให้เป็น T ก่อนแนบ Timezone +07:00 
         let rawDate = document.getElementById('txDate').value; 
         rawDate = rawDate.replace(" ", "T"); 
         const payloadDate = rawDate + ":00+07:00"; 
