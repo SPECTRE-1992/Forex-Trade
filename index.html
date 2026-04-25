@@ -69,12 +69,20 @@
         /* Currency Sub Cards */
         .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
         .dash-card { 
-            background: var(--surface-dark); padding: 15px 10px; border-radius: 14px; 
-            text-align: center; border: 1px solid var(--border); 
+            background: var(--surface-dark); padding: 15px 12px; border-radius: 14px; 
+            text-align: center; border: 1px solid var(--border); display: flex; flex-direction: column;
         }
         .dash-title { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
-        .dash-value { font-size: 16px; font-weight: 600; }
-        .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); }
+        .dash-value { font-size: 18px; font-weight: 600; }
+        .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        
+        /* สถิติย่อย ฝาก/ถอน ภายในบัตรสกุลเงิน */
+        .dash-stats {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
+            font-size: 11px;
+        }
+        .stat-label { color: var(--text-muted); margin-right: 4px; }
 
         /* Controls Panel */
         .controls-panel { 
@@ -184,16 +192,28 @@
                 <div class="dash-title">GBP</div>
                 <div class="dash-value" id="sum-gbp-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-gbp-thb">฿0.00</div>
+                <div class="dash-stats">
+                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-gbp-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-gbp-wid">+0.00</span></div>
+                </div>
             </div>
             <div class="dash-card">
                 <div class="dash-title">EUR</div>
                 <div class="dash-value" id="sum-eur-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-eur-thb">฿0.00</div>
+                <div class="dash-stats">
+                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-eur-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-eur-wid">+0.00</span></div>
+                </div>
             </div>
             <div class="dash-card">
                 <div class="dash-title">USD</div>
                 <div class="dash-value" id="sum-usd-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-usd-thb">฿0.00</div>
+                <div class="dash-stats">
+                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-usd-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-usd-wid">+0.00</span></div>
+                </div>
             </div>
         </div>
 
@@ -239,6 +259,8 @@
                 <option value="amt-asc">จำนวนเงิน (น้อย - มาก)</option>
                 <option value="curr-asc">สกุลเงิน (A - Z)</option>
                 <option value="curr-desc">สกุลเงิน (Z - A)</option>
+                <option value="type-dep">เฉพาะรายการฝาก</option>
+                <option value="type-wid">เฉพาะรายการถอน</option>
             </select>
         </div>
 
@@ -419,16 +441,16 @@
     function clearFilter() {
         document.getElementById('filterDay').value = ''; document.getElementById('filterMonth').value = ''; document.getElementById('filterYear').value = '';
         document.getElementById('startDate').value = ''; document.getElementById('endDate').value = ''; document.getElementById('limitRows').value = '30';
-        document.getElementById('sortOrder').value = 'date-desc'; // คืนค่าตัวเรียงลำดับด้วย
+        document.getElementById('sortOrder').value = 'date-desc'; 
         filterData(); 
     }
 
     function filterData() {
         const selDay = document.getElementById('filterDay').value; const selMonth = document.getElementById('filterMonth').value; const selYear = document.getElementById('filterYear').value;
         const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value; const limit = document.getElementById('limitRows').value;
-        const sortOrder = document.getElementById('sortOrder').value; // ดึงค่าการจัดเรียง
+        const sortOrder = document.getElementById('sortOrder').value; 
         
-        // 1. กรองข้อมูล
+        // 1. กรองข้อมูลตาม วันที่
         let filtered = allData.filter(item => {
             if(!item.date) return false;
             const d = new Date(item.date);
@@ -448,13 +470,20 @@
             return true;
         });
 
-        // คำนวณสรุปยอดจากการกรอง
+        // 🔥 2. กรองข้อมูลตาม ประเภทรายการ (ถ้ามีการเลือก)
+        if (sortOrder === 'type-dep') {
+            filtered = filtered.filter(item => item.type === 'Deposit');
+        } else if (sortOrder === 'type-wid') {
+            filtered = filtered.filter(item => item.type === 'Withdraw');
+        }
+
+        // คำนวณสรุปยอดจากการกรอง (สรุปจะโชว์ตามที่เลือก เช่น ถ้าเลือก "เฉพาะถอน" ยอดฝากจะเป็น 0)
         renderSummary(filtered);
         
-        // 2. จัดเรียงข้อมูล (Sorting)
+        // 3. จัดเรียงข้อมูล (Sorting)
         filtered.sort((a, b) => {
-            if (sortOrder === 'date-desc') {
-                return new Date(b.date) - new Date(a.date);
+            if (sortOrder === 'date-desc' || sortOrder === 'type-dep' || sortOrder === 'type-wid') {
+                return new Date(b.date) - new Date(a.date); // ค่าเริ่มต้นคือล่าสุดขึ้นก่อน
             } else if (sortOrder === 'date-asc') {
                 return new Date(a.date) - new Date(b.date);
             } else if (sortOrder === 'amt-desc') {
@@ -469,12 +498,16 @@
             return 0;
         });
 
-        // 3. หั่นแถวตามที่กำหนด
+        // 4. หั่นแถวตามที่กำหนด
         renderList(limit !== 'all' ? filtered.slice(0, parseInt(limit)) : filtered);
     }
 
     function renderSummary(data) {
-        let sums = { "GBP": { f:0, thb:0 }, "EUR": { f:0, thb:0 }, "USD": { f:0, thb:0 } };
+        let sums = { 
+            "GBP": { f:0, thb:0, depF:0, widF:0 }, 
+            "EUR": { f:0, thb:0, depF:0, widF:0 }, 
+            "USD": { f:0, thb:0, depF:0, widF:0 } 
+        };
         let grandTotalTHB = 0;
         let totalDepositTHB = 0;
         let totalWithdrawTHB = 0;
@@ -489,12 +522,15 @@
                 if(sums[currency] !== undefined) {
                     sums[currency].f += isDep ? -amtF : amtF;
                     sums[currency].thb += isDep ? -amtTHB : amtTHB;
+                    if(isDep) {
+                        sums[currency].depF += amtF;
+                    } else {
+                        sums[currency].widF += amtF;
+                    }
                 }
                 
-                // สรุปรวมกำไรสุทธิ
                 grandTotalTHB += isDep ? -amtTHB : amtTHB;
 
-                // แยกยอดฝาก-ถอน (แสดงเป็นค่าบวกทั้งคู่เพื่อความเข้าใจง่าย)
                 if(isDep) {
                     totalDepositTHB += amtTHB;
                 } else {
@@ -503,26 +539,33 @@
             });
         }
 
-        // อัปเดตการ์ดยอดฝากรวม
         document.getElementById('total-deposit-thb').innerText = `${totalDepositTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        // อัปเดตการ์ดยอดถอนรวม
         document.getElementById('total-withdraw-thb').innerText = `${totalWithdrawTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
-        // อัปเดตกำไรสุทธิรวม
         const totalCard = document.getElementById('total-profit-thb');
         totalCard.innerText = `${grandTotalTHB > 0 ? '+' : ''}${grandTotalTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         totalCard.className = `top-value ${grandTotalTHB >= 0 ? 'positive' : 'negative'}`;
 
         ['GBP', 'EUR', 'USD'].forEach(curr => {
-            let netF = sums[curr].f; let netTHB = sums[curr].thb;
+            let netF = sums[curr].f; 
+            let netTHB = sums[curr].thb;
+            let depF = sums[curr].depF;
+            let widF = sums[curr].widF;
+            
             const elForeign = document.getElementById(`sum-${curr.toLowerCase()}-foreign`);
             const elTHB = document.getElementById(`sum-${curr.toLowerCase()}-thb`);
+            const elDep = document.getElementById(`sum-${curr.toLowerCase()}-dep`);
+            const elWid = document.getElementById(`sum-${curr.toLowerCase()}-wid`);
             
             if(elForeign && elTHB) {
                 elForeign.innerText = `${netF > 0 ? '+' : ''}${netF.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
                 elForeign.className = `dash-value ${netF >= 0 ? 'positive' : 'negative'}`;
+                
                 elTHB.innerText = `฿${netTHB > 0 ? '+' : ''}${netTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
                 elTHB.className = `dash-sub-value ${netTHB >= 0 ? 'positive' : 'negative'}`;
+                
+                if(elDep) elDep.innerText = `-${depF.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                if(elWid) elWid.innerText = `+${widF.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             }
         });
     }
