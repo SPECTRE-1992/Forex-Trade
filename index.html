@@ -74,7 +74,6 @@
         .section-title { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; margin-top: 0; }
         .list-container { display: flex; flex-direction: column; gap: 10px; }
         
-        /* ปรับ Layout รายการใหม่ ประหยัดพื้นที่ */
         .list-item { 
             background: var(--surface-dark); border-radius: 12px; padding: 12px; 
             display: flex; justify-content: space-between; align-items: center; gap: 10px;
@@ -97,7 +96,6 @@
         .val-foreign { font-weight: 600; font-size: 14px; }
         .val-thb { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         
-        /* ปุ่มแก้ไข/ลบ ซ้อน 2 แถวไว้มุมขวา */
         .item-actions { 
             display: flex; flex-direction: column; gap: 6px; 
             padding-left: 10px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
@@ -177,7 +175,11 @@
                     <script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script>
                 </select>
                 <select id="filterMonth" onchange="filterData()">
-                    <option value="">เดือน</option><option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option><option value="3">มีนาคม</option><option value="4">เมษายน</option><option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option><option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option><option value="9">กันยายน</option><option value="10">ตุลาคม</option><option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
+                    <option value="">เดือน</option>
+                    <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option><option value="3">มีนาคม</option>
+                    <option value="4">เมษายน</option><option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
+                    <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option><option value="9">กันยายน</option>
+                    <option value="10">ตุลาคม</option><option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
                 </select>
                 <select id="filterYear" onchange="filterData()">
                     <option value="">ปี</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
@@ -190,18 +192,16 @@
             </div>
             <div class="controls-row">
                 <select id="limitRows" onchange="filterData()">
-                    <option value="30">แสดง 30 รายการ</option><option value="50">แสดง 50 รายการ</option><option value="100">แสดง 100 รายการ</option><option value="all">แสดงทั้งหมด</option>
+                    <option value="30">แสดง 30 รายการ</option><option value="50">แสดง 50 รายการ</option>
+                    <option value="100">แสดง 100 รายการ</option><option value="all">แสดงทั้งหมด</option>
                 </select>
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
             </div>
         </div>
 
         <h3 class="section-title">ประวัติรายการ</h3>
-
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
-        
         <div class="list-container" id="transaction-list"></div>
-
         <button class="fab" onclick="showForm()">+</button>
     </div>
 
@@ -250,10 +250,18 @@
     const SESSION_DAYS = 5;
     let editingRowNumber = null;
 
+    // 🔥 ฟังก์ชันแปลงเวลาที่เสถียรที่สุดเพื่อหลีกเลี่ยง Timezone Offset อัตโนมัติ
+    function formatLocalToInput(d) {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const hours = String(d.getHours()).padStart(2, '0');
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
     function setDefaultDateTime() {
-        const now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        document.getElementById('txDate').value = now.toISOString().slice(0,16);
+        document.getElementById('txDate').value = formatLocalToInput(new Date());
     }
 
     window.onload = function() { 
@@ -322,9 +330,9 @@
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
+        // แปลงวันที่สำหรับแก้ไขโดยใช้ฟังก์ชันแบบ Manual หลีกเลี่ยง Timezone Shift
         const d = new Date(item.date);
-        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-        document.getElementById('txDate').value = d.toISOString().slice(0,16);
+        document.getElementById('txDate').value = formatLocalToInput(d);
         
         document.getElementById('currency').value = item.currency;
         document.getElementById('type').value = item.type;
@@ -474,8 +482,8 @@
                         <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️</button>
-                        <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️</button>
+                        <button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️ แก้ไข</button>
+                        <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️ ลบ</button>
                     </div>
                 </div>`;
             });
@@ -489,10 +497,14 @@
         const loading = document.getElementById('form-loading');
         btn.style.display = 'none'; loading.style.display = 'block';
 
+        // 🔥 แนบท้าย +07:00 เสมอ เพื่อบังคับให้ Google บันทึกเป็นเวลาไทย (ป้องกันการเลื่อน 12 ชั่วโมง)
+        const rawDate = document.getElementById('txDate').value;
+        const payloadDate = rawDate + ":00+07:00"; 
+
         const payload = {
             action: editingRowNumber ? "edit" : "add",
             rowNumber: editingRowNumber,
-            date: new Date(document.getElementById('txDate').value).toISOString(),
+            date: payloadDate,
             currency: document.getElementById('currency').value,
             type: document.getElementById('type').value,
             amountForeign: document.getElementById('amountForeign').value,
