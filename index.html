@@ -279,6 +279,14 @@
     }
 
     function showForm() {
+        // 🔥 เคลียร์ค่าทั้งหมดทุกครั้งที่กดปุ่ม + เปิดฟอร์ม
+        document.getElementById('forexForm').reset();
+        document.getElementById('amountForeign').value = '';
+        document.getElementById('rate').value = '';
+        document.getElementById('amountTHB').value = '';
+        document.getElementById('note').value = '';
+        setDefaultDateTime(); // รีเซ็ตเวลาให้เป็นปัจจุบัน
+
         document.getElementById('app-section').classList.add('hidden');
         document.getElementById('form-section').classList.remove('hidden');
         window.scrollTo(0, 0);
@@ -294,40 +302,24 @@
     const inputRate = document.getElementById('rate');
     const amtTHB = document.getElementById('amountTHB');
 
-    // 1. ถ้าพิมพ์ช่องต่างประเทศ
     amtF.addEventListener('input', () => {
         let f = parseFloat(amtF.value);
         let r = parseFloat(inputRate.value);
         let t = parseFloat(amtTHB.value);
-        
-        // ถ้ามีเรทอยู่แล้ว ให้คูณเป็นบาท
-        if(f && r) {
-            amtTHB.value = (f * r).toFixed(2);
-        } 
-        // ถ้ามีบาทอยู่แล้ว (แต่ยังไม่มีเรท) ให้หารหาเรท
-        else if (f && t) {
-            inputRate.value = (t / f).toFixed(4);
-        }
+        if(f && r) { amtTHB.value = (f * r).toFixed(2); } 
+        else if (f && t) { inputRate.value = (t / f).toFixed(4); }
     });
 
-    // 2. ถ้าพิมพ์ช่องอัตราแลกเปลี่ยน
     inputRate.addEventListener('input', () => {
         let f = parseFloat(amtF.value);
         let r = parseFloat(inputRate.value);
-        // มีต่างประเทศและเรท ให้หาบาท
-        if(f && r) {
-            amtTHB.value = (f * r).toFixed(2);
-        }
+        if(f && r) { amtTHB.value = (f * r).toFixed(2); }
     });
 
-    // 3. ถ้าพิมพ์ช่องเงินบาท (THB)
     amtTHB.addEventListener('input', () => {
         let f = parseFloat(amtF.value);
         let t = parseFloat(amtTHB.value);
-        // มีต่างประเทศและบาท ให้หาเรท
-        if(f && t) {
-            inputRate.value = (t / f).toFixed(4);
-        }
+        if(f && t) { inputRate.value = (t / f).toFixed(4); }
     });
     // --------------------------------
 
@@ -500,13 +492,6 @@
         .then(res => res.json())
         .then(data => {
             if(data.status === 'success'){
-                document.getElementById('forexForm').reset();
-                document.getElementById('amountForeign').value = '';
-                document.getElementById('rate').value = '';
-                document.getElementById('amountTHB').value = '';
-                document.getElementById('note').value = '';
-                setDefaultDateTime(); 
-                
                 showDashboard(); 
                 loadData();
             } else { alert('❌ เกิดข้อผิดพลาด: ' + data.message); }
