@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Forex App Pro</title>
+    <title>SPECTRE TRADE</title>
     
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2452/2452140.png">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2452/2452140.png">
@@ -148,6 +148,7 @@
             margin: 0; 
             font-size: 20px; 
             color: #fff; 
+            white-space: nowrap;
         }
 
         .header-btns {
@@ -160,7 +161,7 @@
             border: 1px solid var(--error); 
             color: var(--error); 
             width: auto; 
-            padding: 6px 14px; 
+            padding: 6px 12px; 
             font-size: 13px; 
             margin: 0; 
             border-radius: 8px; 
@@ -171,22 +172,27 @@
             border: 1px solid var(--primary); 
             color: #fff; 
             width: auto; 
-            padding: 6px 14px; 
+            padding: 6px 12px; 
             font-size: 13px; 
             margin: 0; 
             border-radius: 8px; 
         }
 
-        /* 🔥 แก้ปัญหาปุ่ม Header บนมือถือ */
+        .btn-text {
+            display: inline;
+        }
+
+        /* 🔥 ปรับปุ่มบนมือถือให้กลายเป็น Icon เล็กๆ อยู่บรรทัดเดียวกัน */
         @media (max-width: 500px) {
-            .app-header {
-                flex-direction: column; /* เรียงจากบนลงล่าง */
-                align-items: flex-start; /* จัดชิดซ้าย */
-                gap: 15px; /* ระยะห่างระหว่างตัวหนังสือกับปุ่ม */
+            .app-header h2 {
+                font-size: 17px; /* ลดขนาดตัวอักษรนิดหน่อยเพื่อไม่ให้เบียด */
             }
-            .header-btns {
-                width: 100%;
-                justify-content: flex-end; /* จัดปุ่มให้อยู่ชิดขวา */
+            .btn-text { 
+                display: none; /* ซ่อนข้อความในมือถือ */
+            }
+            .summary-btn, .logout-btn {
+                padding: 6px 10px;
+                font-size: 16px; /* ขยายขนาด icon ให้กดง่าย */
             }
         }
 
@@ -632,7 +638,7 @@
 
 <div id="login-section">
     <div class="login-card">
-        <h2 class="text-primary">Forex App Pro</h2>
+        <h2 class="text-primary">SPECTRE TRADE</h2>
         <input type="password" id="password" placeholder="รหัสผ่าน (กด Enter)" onkeypress="handleLoginKey(event)" style="text-align: center;">
         <button onclick="checkLogin()">เข้าสู่ระบบ</button>
         <p id="login-error" class="hidden" style="color: var(--error); font-size: 13px; margin-top: 15px;">รหัสผ่านไม่ถูกต้อง!</p>
@@ -645,8 +651,8 @@
         <div class="app-header">
             <h2>SPECTRE TRADE</h2>
             <div class="header-btns">
-                <button class="summary-btn" onclick="showSummary()">📊 สรุปผล</button>
-                <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
+                <button class="summary-btn" onclick="showSummary()" title="สรุปผล">📊<span class="btn-text"> สรุปผล</span></button>
+                <button class="logout-btn" onclick="logout()" title="ออกจากระบบ">🚪<span class="btn-text"> ออกระบบ</span></button>
             </div>
         </div>
         
