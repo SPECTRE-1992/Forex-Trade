@@ -18,8 +18,6 @@
 
         * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        
-        /* ขยายจอให้กว้างขึ้นสำหรับ PC */
         .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 90px; }
 
         /* Login */
@@ -48,7 +46,7 @@
         .app-header h2 { margin: 0; font-size: 20px; color: #fff; }
         .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); width: auto; padding: 6px 14px; font-size: 13px; margin: 0; border-radius: 8px; }
 
-        /* Top Summary Cards (ฝาก, ถอน, สุทธิ) */
+        /* Top Summary Cards */
         .top-summary-grid { 
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; 
         }
@@ -60,14 +58,13 @@
         .top-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
         .top-value { font-size: 24px; font-weight: 600; }
 
-        /* Responsive สำหรับ Top Cards เมื่อหน้าจอแคบ (มือถือ) */
         @media (max-width: 600px) {
             .top-summary-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .profit-card { grid-column: span 2; } /* ให้กำไรสุทธิกางเต็ม 2 คอลัมน์ */
+            .profit-card { grid-column: span 2; }
         }
 
-        /* Currency Sub Cards */
-        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        /* Currency Cards (ตอนนี้เหลือ 2) */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
         .dash-card { 
             background: var(--surface-dark); padding: 15px 12px; border-radius: 14px; 
             text-align: center; border: 1px solid var(--border); display: flex; flex-direction: column;
@@ -76,13 +73,11 @@
         .dash-value { font-size: 18px; font-weight: 600; }
         .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
         
-        /* สถิติย่อย ฝาก/ถอน ภายในบัตรสกุลเงิน */
         .dash-stats {
             display: flex; justify-content: space-between; align-items: center;
             margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
             font-size: 11px;
         }
-        .stat-label { color: var(--text-muted); margin-right: 4px; }
 
         /* Controls Panel */
         .controls-panel { 
@@ -99,16 +94,12 @@
         .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
         
         .list-container { display: flex; flex-direction: column; gap: 12px; }
-        
         .list-item { 
             background: var(--surface-dark); border-radius: 14px; padding: 15px; 
             display: flex; justify-content: space-between; align-items: center; gap: 15px;
         }
         
-        .item-icon-wrapper { 
-            width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; 
-            font-size: 18px; margin-right: 15px; flex-shrink: 0; 
-        }
+        .item-icon-wrapper { width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; margin-right: 15px; flex-shrink: 0; }
         .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
         .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
 
@@ -122,17 +113,8 @@
         .val-foreign { font-weight: 600; font-size: 16px; }
         .val-thb { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
         
-        .item-actions { 
-            display: flex; flex-direction: column; gap: 8px; 
-            padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
-        }
-        .action-btn { 
-            background: transparent; border: 1px solid var(--border); color: var(--text-muted); 
-            padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; 
-            margin: 0; min-width: 65px; text-align: center; white-space: nowrap; transition: 0.2s;
-        }
-        .action-btn.edit:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-        .action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+        .item-actions { display: flex; flex-direction: column; gap: 8px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
+        .action-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; margin: 0; min-width: 65px; text-align: center; white-space: nowrap; transition: 0.2s; }
         
         .positive { color: var(--secondary) !important; }
         .negative { color: var(--error) !important; }
@@ -142,12 +124,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* FAB */
-        .fab { 
-            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 30px; 
-            background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; 
-            font-size: 30px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; transition: 0.2s;
-        }
-        .fab:hover { transform: scale(1.05); }
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 30px; background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; transition: 0.2s; }
 
         .form-header { display: flex; align-items: center; margin-bottom: 25px; gap: 15px; }
         .back-btn { background: var(--surface-dark); width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 20px; margin: 0; padding: 0; cursor: pointer; }
@@ -206,15 +183,6 @@
                     <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-eur-wid">+0.00</span></div>
                 </div>
             </div>
-            <div class="dash-card">
-                <div class="dash-title">USD</div>
-                <div class="dash-value" id="sum-usd-foreign">0.00</div>
-                <div class="dash-sub-value" id="sum-usd-thb">฿0.00</div>
-                <div class="dash-stats">
-                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-usd-dep">-0.00</span></div>
-                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-usd-wid">+0.00</span></div>
-                </div>
-            </div>
         </div>
 
         <div class="controls-panel">
@@ -240,11 +208,14 @@
                 <input type="date" id="endDate" onchange="filterData()">
             </div>
             <div class="controls-row">
+                <select id="filterType" onchange="filterData()">
+                    <option value="all">ประเภท: ทั้งหมด</option>
+                    <option value="Deposit">ประเภท: เฉพาะฝาก</option>
+                    <option value="Withdraw">ประเภท: เฉพาะถอน</option>
+                </select>
                 <select id="limitRows" onchange="filterData()">
-                    <option value="30">แสดง 30 รายการ</option>
-                    <option value="50">แสดง 50 รายการ</option>
-                    <option value="100">แสดง 100 รายการ</option>
-                    <option value="all">แสดงทั้งหมด</option>
+                    <option value="30">แสดง 30 รายการ</option><option value="50">แสดง 50 รายการ</option>
+                    <option value="100">แสดง 100 รายการ</option><option value="all">แสดงทั้งหมด</option>
                 </select>
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
             </div>
@@ -253,14 +224,12 @@
         <div class="section-header">
             <h3 class="section-title">ประวัติรายการ</h3>
             <select id="sortOrder" onchange="filterData()" style="width: auto; margin: 0; padding: 8px 12px; font-size: 13px;">
-                <option value="date-desc">เวลา (ล่าสุด - เก่าสุด)</option>
-                <option value="date-asc">เวลา (เก่าสุด - ล่าสุด)</option>
-                <option value="amt-desc">จำนวนเงิน (มาก - น้อย)</option>
-                <option value="amt-asc">จำนวนเงิน (น้อย - มาก)</option>
-                <option value="curr-asc">สกุลเงิน (A - Z)</option>
-                <option value="curr-desc">สกุลเงิน (Z - A)</option>
-                <option value="type-dep">เฉพาะรายการฝาก</option>
-                <option value="type-wid">เฉพาะรายการถอน</option>
+                <option value="date-desc">เรียง: ล่าสุด - เก่าสุด</option>
+                <option value="date-asc">เรียง: เก่าสุด - ล่าสุด</option>
+                <option value="amt-desc">เรียง: เงิน (มาก - น้อย)</option>
+                <option value="amt-asc">เรียง: เงิน (น้อย - มาก)</option>
+                <option value="curr-asc">เรียง: สกุลเงิน (A - Z)</option>
+                <option value="curr-desc">เรียง: สกุลเงิน (Z - A)</option>
             </select>
         </div>
 
@@ -280,7 +249,7 @@
 
             <label>สกุลเงิน</label>
             <select id="currency">
-                <option value="GBP">GBP</option><option value="EUR">EUR</option><option value="USD">USD</option>
+                <option value="GBP">GBP</option><option value="EUR">EUR</option>
             </select>
 
             <label>ประเภท</label>
@@ -309,7 +278,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
-    // 🚨🚨🚨 ใส่ URL Web App ของคุณ 🚨🚨🚨
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDtIhfDFcfgvwdG2OvbUjJ9hYq3mH8795ZSW31x4SJs_F01-wZzyxMj3iUf6J6Gso/exec';
 
     let allData = [];
@@ -323,53 +291,35 @@
         defaultDate: new Date()
     });
 
-    window.onload = function() { 
-        checkSession(); 
-    };
+    window.onload = function() { checkSession(); };
 
     function checkSession() {
         const loginTime = localStorage.getItem('forexLoginTimestamp');
-        if (loginTime) {
-            const now = new Date().getTime();
-            const diffDays = (now - parseInt(loginTime)) / (1000 * 3600 * 24);
-            if (diffDays <= SESSION_DAYS) { showMainApp(); return; } 
-            else { localStorage.removeItem('forexLoginTimestamp'); }
-        }
-        document.getElementById('login-section').style.display = 'flex';
+        if (loginTime && (new Date().getTime() - parseInt(loginTime)) / (1000 * 3600 * 24) <= SESSION_DAYS) { showMainApp(); } 
+        else { document.getElementById('login-section').style.display = 'flex'; }
     }
 
     function handleLoginKey(e) { if(e.key === 'Enter') checkLogin(); }
-    
     function checkLogin() {
         if (document.getElementById('password').value === 'spectre') {
             localStorage.setItem('forexLoginTimestamp', new Date().getTime().toString());
             showMainApp();
-        } else {
-            document.getElementById('login-error').classList.remove('hidden');
-        }
+        } else { document.getElementById('login-error').classList.remove('hidden'); }
     }
 
     function logout() { localStorage.removeItem('forexLoginTimestamp'); location.reload(); }
-
-    function showMainApp() {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('main-container').classList.remove('hidden');
-        loadData();
-    }
+    function showMainApp() { document.getElementById('login-section').style.display = 'none'; document.getElementById('main-container').classList.remove('hidden'); loadData(); }
 
     function showForm() {
         editingRowNumber = null;
         document.getElementById('form-title').innerText = "บันทึก ฝาก/ถอน";
         document.getElementById('submitBtn').innerText = "บันทึกข้อมูล";
-        
         document.getElementById('forexForm').reset();
         document.getElementById('amountForeign').value = '';
         document.getElementById('rate').value = '';
         document.getElementById('amountTHB').value = '';
         document.getElementById('note').value = '';
-        
         datePicker.setDate(new Date());
-
         document.getElementById('app-section').classList.add('hidden');
         document.getElementById('form-section').classList.remove('hidden');
         window.scrollTo(0, 0);
@@ -384,264 +334,146 @@
     function editTransaction(rowNum) {
         const item = allData.find(d => d.rowNumber === rowNum);
         if(!item) return;
-
         editingRowNumber = rowNum;
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
-
         datePicker.setDate(new Date(item.date));
-        
         document.getElementById('currency').value = item.currency;
         document.getElementById('type').value = item.type;
         document.getElementById('amountForeign').value = item.amountForeign;
         document.getElementById('rate').value = item.rate;
         document.getElementById('amountTHB').value = item.amountTHB;
         document.getElementById('note').value = item.note || '';
-
         document.getElementById('app-section').classList.add('hidden');
         document.getElementById('form-section').classList.remove('hidden');
-        window.scrollTo(0, 0);
     }
 
     function deleteTransaction(rowNum) {
-        if(confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? (ลบแล้วกู้คืนไม่ได้)")) {
+        if(confirm("⚠️ ลบรายการนี้?")) {
             document.getElementById('dash-loading').style.display = 'block';
-            const payload = { action: "delete", rowNumber: rowNum };
-            
-            fetch(SCRIPT_URL, {
-                method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload)
-            }).then(res => res.json()).then(data => {
-                if(data.status === 'success'){ loadData(); } else { alert('❌ ' + data.message); }
-            }).catch(err => { alert('❌ Error: ' + err); document.getElementById('dash-loading').style.display = 'none'; });
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "delete", rowNumber: rowNum }) })
+            .then(() => loadData()).catch(err => alert(err));
         }
     }
 
-    const amtF = document.getElementById('amountForeign');
-    const inputRate = document.getElementById('rate');
-    const amtTHB = document.getElementById('amountTHB');
-
+    const amtF = document.getElementById('amountForeign'), inputRate = document.getElementById('rate'), amtTHB = document.getElementById('amountTHB');
     amtF.addEventListener('input', () => {
-        let f = parseFloat(amtF.value); let r = parseFloat(inputRate.value); let t = parseFloat(amtTHB.value);
+        let f = parseFloat(amtF.value), r = parseFloat(inputRate.value), t = parseFloat(amtTHB.value);
         if(f && r) { amtTHB.value = (f * r).toFixed(2); } else if (f && t) { inputRate.value = (t / f).toFixed(4); }
     });
-    inputRate.addEventListener('input', () => { let f = parseFloat(amtF.value); let r = parseFloat(inputRate.value); if(f && r) { amtTHB.value = (f * r).toFixed(2); }});
-    amtTHB.addEventListener('input', () => { let f = parseFloat(amtF.value); let t = parseFloat(amtTHB.value); if(f && t) { inputRate.value = (t / f).toFixed(4); }});
+    inputRate.addEventListener('input', () => { if(amtF.value && inputRate.value) amtTHB.value = (amtF.value * inputRate.value).toFixed(2); });
+    amtTHB.addEventListener('input', () => { if(amtF.value && amtTHB.value) inputRate.value = (amtTHB.value / amtF.value).toFixed(4); });
 
     function loadData() {
         document.getElementById('dash-loading').style.display = 'block';
-        document.getElementById('transaction-list').innerHTML = '';
-        
-        fetch(SCRIPT_URL)
-            .then(res => res.json())
-            .then(res => { if(res.status === 'success') { allData = res.data || []; } })
-            .catch(err => console.error(err))
-            .finally(() => { document.getElementById('dash-loading').style.display = 'none'; filterData(); });
+        fetch(SCRIPT_URL).then(res => res.json()).then(res => { if(res.status === 'success') allData = res.data || []; })
+        .finally(() => { document.getElementById('dash-loading').style.display = 'none'; filterData(); });
     }
 
     function clearFilter() {
         document.getElementById('filterDay').value = ''; document.getElementById('filterMonth').value = ''; document.getElementById('filterYear').value = '';
         document.getElementById('startDate').value = ''; document.getElementById('endDate').value = ''; document.getElementById('limitRows').value = '30';
-        document.getElementById('sortOrder').value = 'date-desc'; 
+        document.getElementById('sortOrder').value = 'date-desc'; document.getElementById('filterType').value = 'all';
         filterData(); 
     }
 
     function filterData() {
-        const selDay = document.getElementById('filterDay').value; const selMonth = document.getElementById('filterMonth').value; const selYear = document.getElementById('filterYear').value;
-        const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value; const limit = document.getElementById('limitRows').value;
-        const sortOrder = document.getElementById('sortOrder').value; 
+        const selDay = document.getElementById('filterDay').value, selMonth = document.getElementById('filterMonth').value, selYear = document.getElementById('filterYear').value,
+              start = document.getElementById('startDate').value, end = document.getElementById('endDate').value, limit = document.getElementById('limitRows').value,
+              sortOrder = document.getElementById('sortOrder').value, filterType = document.getElementById('filterType').value;
         
-        // 1. กรองข้อมูลตาม วันที่
         let filtered = allData.filter(item => {
             if(!item.date) return false;
             const d = new Date(item.date);
             if(selDay && d.getDate().toString() !== selDay) return false;
             if(selMonth && (d.getMonth() + 1).toString() !== selMonth) return false;
             if(selYear && d.getFullYear().toString() !== selYear) return false;
-
             const itemTime = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-            if (start) {
-                const startD = new Date(start); startD.setHours(0,0,0,0);
-                if(itemTime < startD.getTime()) return false;
-            }
-            if (end) {
-                const endD = new Date(end); endD.setHours(23,59,59,999);
-                if(d.getTime() > endD.getTime()) return false;
-            }
+            if (start && itemTime < new Date(start).setHours(0,0,0,0)) return false;
+            if (end && itemTime > new Date(end).setHours(23,59,59,999)) return false;
+            
+            // 🔥 กรองประเภทรายการ
+            if(filterType !== 'all' && item.type !== filterType) return false;
+            
             return true;
         });
 
-        // 🔥 2. กรองข้อมูลตาม ประเภทรายการ (ถ้ามีการเลือก)
-        if (sortOrder === 'type-dep') {
-            filtered = filtered.filter(item => item.type === 'Deposit');
-        } else if (sortOrder === 'type-wid') {
-            filtered = filtered.filter(item => item.type === 'Withdraw');
-        }
-
-        // คำนวณสรุปยอดจากการกรอง (สรุปจะโชว์ตามที่เลือก เช่น ถ้าเลือก "เฉพาะถอน" ยอดฝากจะเป็น 0)
         renderSummary(filtered);
         
-        // 3. จัดเรียงข้อมูล (Sorting)
         filtered.sort((a, b) => {
-            if (sortOrder === 'date-desc' || sortOrder === 'type-dep' || sortOrder === 'type-wid') {
-                return new Date(b.date) - new Date(a.date); // ค่าเริ่มต้นคือล่าสุดขึ้นก่อน
-            } else if (sortOrder === 'date-asc') {
-                return new Date(a.date) - new Date(b.date);
-            } else if (sortOrder === 'amt-desc') {
-                return parseFloat(b.amountTHB || 0) - parseFloat(a.amountTHB || 0);
-            } else if (sortOrder === 'amt-asc') {
-                return parseFloat(a.amountTHB || 0) - parseFloat(b.amountTHB || 0);
-            } else if (sortOrder === 'curr-asc') {
-                return (a.currency || '').localeCompare(b.currency || '');
-            } else if (sortOrder === 'curr-desc') {
-                return (b.currency || '').localeCompare(a.currency || '');
-            }
+            if (sortOrder === 'date-desc') return new Date(b.date) - new Date(a.date);
+            if (sortOrder === 'date-asc') return new Date(a.date) - new Date(b.date);
+            if (sortOrder === 'amt-desc') return parseFloat(b.amountTHB || 0) - parseFloat(a.amountTHB || 0);
+            if (sortOrder === 'amt-asc') return parseFloat(a.amountTHB || 0) - parseFloat(b.amountTHB || 0);
+            if (sortOrder === 'curr-asc') return (a.currency || '').localeCompare(b.currency || '');
+            if (sortOrder === 'curr-desc') return (b.currency || '').localeCompare(a.currency || '');
             return 0;
         });
 
-        // 4. หั่นแถวตามที่กำหนด
         renderList(limit !== 'all' ? filtered.slice(0, parseInt(limit)) : filtered);
     }
 
     function renderSummary(data) {
-        let sums = { 
-            "GBP": { f:0, thb:0, depF:0, widF:0 }, 
-            "EUR": { f:0, thb:0, depF:0, widF:0 }, 
-            "USD": { f:0, thb:0, depF:0, widF:0 } 
-        };
-        let grandTotalTHB = 0;
-        let totalDepositTHB = 0;
-        let totalWithdrawTHB = 0;
+        let sums = { "GBP": { f:0, thb:0, depF:0, widF:0 }, "EUR": { f:0, thb:0, depF:0, widF:0 } };
+        let totalTHB = 0, depTHB = 0, widTHB = 0;
         
-        if(Array.isArray(data)) {
-            data.forEach(item => {
-                const currency = item.currency ? item.currency.trim().toUpperCase() : '';
-                const amtF = parseFloat(item.amountForeign) || 0;
-                const amtTHB = parseFloat(item.amountTHB) || 0; 
-                const isDep = item.type === "Deposit";
-
-                if(sums[currency] !== undefined) {
-                    sums[currency].f += isDep ? -amtF : amtF;
-                    sums[currency].thb += isDep ? -amtTHB : amtTHB;
-                    if(isDep) {
-                        sums[currency].depF += amtF;
-                    } else {
-                        sums[currency].widF += amtF;
-                    }
-                }
-                
-                grandTotalTHB += isDep ? -amtTHB : amtTHB;
-
-                if(isDep) {
-                    totalDepositTHB += amtTHB;
-                } else {
-                    totalWithdrawTHB += amtTHB;
-                }
-            });
-        }
-
-        document.getElementById('total-deposit-thb').innerText = `${totalDepositTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        document.getElementById('total-withdraw-thb').innerText = `${totalWithdrawTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-
-        const totalCard = document.getElementById('total-profit-thb');
-        totalCard.innerText = `${grandTotalTHB > 0 ? '+' : ''}${grandTotalTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        totalCard.className = `top-value ${grandTotalTHB >= 0 ? 'positive' : 'negative'}`;
-
-        ['GBP', 'EUR', 'USD'].forEach(curr => {
-            let netF = sums[curr].f; 
-            let netTHB = sums[curr].thb;
-            let depF = sums[curr].depF;
-            let widF = sums[curr].widF;
-            
-            const elForeign = document.getElementById(`sum-${curr.toLowerCase()}-foreign`);
-            const elTHB = document.getElementById(`sum-${curr.toLowerCase()}-thb`);
-            const elDep = document.getElementById(`sum-${curr.toLowerCase()}-dep`);
-            const elWid = document.getElementById(`sum-${curr.toLowerCase()}-wid`);
-            
-            if(elForeign && elTHB) {
-                elForeign.innerText = `${netF > 0 ? '+' : ''}${netF.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                elForeign.className = `dash-value ${netF >= 0 ? 'positive' : 'negative'}`;
-                
-                elTHB.innerText = `฿${netTHB > 0 ? '+' : ''}${netTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                elTHB.className = `dash-sub-value ${netTHB >= 0 ? 'positive' : 'negative'}`;
-                
-                if(elDep) elDep.innerText = `-${depF.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                if(elWid) elWid.innerText = `+${widF.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        data.forEach(item => {
+            const cur = item.currency, amtF = parseFloat(item.amountForeign)||0, amtT = parseFloat(item.amountTHB)||0, isD = item.type === "Deposit";
+            if(sums[cur]) {
+                sums[cur].f += isD ? -amtF : amtF;
+                sums[cur].thb += isD ? -amtT : amtT;
+                if(isD) sums[cur].depF += amtF; else sums[cur].widF += amtF;
             }
+            totalTHB += isD ? -amtT : amtT;
+            if(isD) depTHB += amtT; else widTHB += amtT;
+        });
+
+        document.getElementById('total-deposit-thb').innerText = depTHB.toLocaleString('th-TH', {minimumFractionDigits: 2});
+        document.getElementById('total-withdraw-thb').innerText = widTHB.toLocaleString('th-TH', {minimumFractionDigits: 2});
+        document.getElementById('total-profit-thb').innerText = (totalTHB > 0 ? '+' : '') + totalTHB.toLocaleString('th-TH', {minimumFractionDigits: 2});
+        document.getElementById('total-profit-thb').className = `top-value ${totalTHB >= 0 ? 'positive' : 'negative'}`;
+
+        ['GBP', 'EUR'].forEach(curr => {
+            const s = sums[curr], id = curr.toLowerCase();
+            document.getElementById(`sum-${id}-foreign`).innerText = (s.f > 0 ? '+' : '') + s.f.toLocaleString('th-TH', {minimumFractionDigits: 2});
+            document.getElementById(`sum-${id}-foreign`).className = `dash-value ${s.f >= 0 ? 'positive' : 'negative'}`;
+            document.getElementById(`sum-${id}-thb`).innerText = `฿${(s.thb > 0 ? '+' : '')}${s.thb.toLocaleString('th-TH', {minimumFractionDigits: 2})}`;
+            document.getElementById(`sum-${id}-thb`).className = `dash-sub-value ${s.thb >= 0 ? 'positive' : 'negative'}`;
+            document.getElementById(`sum-${id}-dep`).innerText = `-${s.depF.toLocaleString('th-TH', {minimumFractionDigits: 2})}`;
+            document.getElementById(`sum-${id}-wid`).innerText = `+${s.widF.toLocaleString('th-TH', {minimumFractionDigits: 2})}`;
         });
     }
 
     function renderList(data) {
-        let html = '';
-        if(data.length === 0) {
-            html = '<div style="text-align:center; color:var(--text-muted); padding:30px; background:var(--surface-dark); border-radius:14px;">ไม่พบรายการในช่วงเวลาที่เลือก</div>';
-        } else {
-            data.forEach(item => {
-                let d = new Date(item.date);
-                let dateStr = d.toLocaleDateString('th-TH', { day: '2-digit', month: 'short', year: '2-digit' }) + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit', minute:'2-digit', hour12: false}) + ' น.';
-                
-                let isDep = item.type === 'Deposit';
-                let mainClass = isDep ? 'deposit' : 'withdraw';
-                let textClass = isDep ? 'negative' : 'positive';
-                let sign = isDep ? '-' : '+';
-                let icon = isDep ? '↑' : '↓'; 
-                let typeTh = isDep ? 'ฝาก' : 'ถอน';
-                
-                html += `
-                <div class="list-item ${mainClass}">
-                    <div class="item-left">
-                        <div class="item-icon-wrapper">${icon}</div>
-                        <div class="item-main">
-                            <div class="item-title">${typeTh} ${item.currency}</div>
-                            <div class="item-date">${dateStr}</div>
-                            ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
-                        </div>
-                    </div>
-                    <div class="item-amount">
-                        <div class="val-foreign ${textClass}">${sign}${parseFloat(item.amountForeign).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                        <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️ แก้ไข</button>
-                        <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️ ลบ</button>
-                    </div>
-                </div>`;
-            });
-        }
-        document.getElementById('transaction-list').innerHTML = html;
+        let html = data.map(item => {
+            const d = new Date(item.date), isD = item.type === 'Deposit';
+            return `<div class="list-item ${item.type.toLowerCase()}">
+                <div class="item-left"><div class="item-icon-wrapper">${isD?'↑':'↓'}</div>
+                <div class="item-main"><div class="item-title">${isD?'ฝาก':'ถอน'} ${item.currency}</div>
+                <div class="item-date">${d.toLocaleDateString('th-TH', {day:'2-digit',month:'short',year:'2-digit'})} ${d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',hour12:false})} น.</div>
+                ${item.note?`<div class="item-note">📝 ${item.note}</div>`:''}</div></div>
+                <div class="item-amount"><div class="val-foreign ${isD?'negative':'positive'}">${isD?'-':'+'}${parseFloat(item.amountForeign).toLocaleString('th-TH',{minimumFractionDigits:2})}</div>
+                <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH',{minimumFractionDigits:2})}</div></div>
+                <div class="item-actions"><button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️ แก้ไข</button>
+                <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️ ลบ</button></div></div>`;
+        }).join('');
+        document.getElementById('transaction-list').innerHTML = html || '<div style="text-align:center;color:#666;padding:30px;">ไม่พบรายการ</div>';
     }
 
     document.getElementById('forexForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        const loading = document.getElementById('form-loading');
+        const btn = document.getElementById('submitBtn'), loading = document.getElementById('form-loading');
         btn.style.display = 'none'; loading.style.display = 'block';
-
-        let rawDate = document.getElementById('txDate').value; 
-        rawDate = rawDate.replace(" ", "T"); 
-        const payloadDate = rawDate + ":00+07:00"; 
-
         const payload = {
-            action: editingRowNumber ? "edit" : "add",
-            rowNumber: editingRowNumber,
-            date: payloadDate,
-            currency: document.getElementById('currency').value,
-            type: document.getElementById('type').value,
-            amountForeign: document.getElementById('amountForeign').value,
-            rate: document.getElementById('rate').value,
-            amountTHB: document.getElementById('amountTHB').value,
-            note: document.getElementById('note').value
+            action: editingRowNumber ? "edit" : "add", rowNumber: editingRowNumber,
+            date: document.getElementById('txDate').value.replace(" ", "T") + ":00+07:00",
+            currency: document.getElementById('currency').value, type: document.getElementById('type').value,
+            amountForeign: amtF.value, rate: inputRate.value, amountTHB: amtTHB.value, note: document.getElementById('note').value
         };
-
         fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-        .then(res => res.json())
-        .then(data => {
-            if(data.status === 'success'){ editingRowNumber = null; document.getElementById('forexForm').reset(); showDashboard(); loadData(); } 
-            else { alert('❌ เกิดข้อผิดพลาด: ' + data.message); }
-        })
-        .catch(err => alert('❌ Error: ' + err))
+        .then(() => { editingRowNumber = null; document.getElementById('forexForm').reset(); showDashboard(); loadData(); })
         .finally(() => { btn.style.display = 'block'; loading.style.display = 'none'; });
     });
 </script>
-
 </body>
 </html>
