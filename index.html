@@ -215,10 +215,10 @@
             <label>จำนวนเงินต่างประเทศ</label>
             <input type="number" id="amountForeign" step="0.01" placeholder="0.00" required>
 
-            <label>อัตราแลกเปลี่ยน</label>
+            <label>อัตราแลกเปลี่ยน <span style="color:var(--secondary); font-size:12px;">(คำนวณอัตโนมัติได้)</span></label>
             <input type="number" id="rate" step="0.0001" placeholder="เช่น 45.50" required>
 
-            <label>จำนวนเงินบาท (THB) <span style="color:var(--secondary);">(คำนวณอัตโนมัติ)</span></label>
+            <label>จำนวนเงินบาท (THB) <span style="color:var(--secondary); font-size:12px;">(คำนวณอัตโนมัติได้)</span></label>
             <input type="number" id="amountTHB" step="0.01" placeholder="0.00" required>
 
             <label>หมายเหตุ</label>
@@ -237,7 +237,6 @@
     let allData = [];
     const SESSION_DAYS = 5;
 
-    // ตั้งค่าเวลาปัจจุบันให้ช่อง input datetime
     function setDefaultDateTime() {
         const now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -290,15 +289,47 @@
         window.scrollTo(0, 0);
     }
 
+    // --- ระบบคำนวณ 2 ทางอัจฉริยะ ---
     const amtF = document.getElementById('amountForeign');
     const inputRate = document.getElementById('rate');
     const amtTHB = document.getElementById('amountTHB');
 
-    function calculate() {
-        if(amtF.value && inputRate.value) amtTHB.value = (parseFloat(amtF.value) * parseFloat(inputRate.value)).toFixed(2);
-    }
-    amtF.addEventListener('input', calculate);
-    inputRate.addEventListener('input', calculate);
+    // 1. ถ้าพิมพ์ช่องต่างประเทศ
+    amtF.addEventListener('input', () => {
+        let f = parseFloat(amtF.value);
+        let r = parseFloat(inputRate.value);
+        let t = parseFloat(amtTHB.value);
+        
+        // ถ้ามีเรทอยู่แล้ว ให้คูณเป็นบาท
+        if(f && r) {
+            amtTHB.value = (f * r).toFixed(2);
+        } 
+        // ถ้ามีบาทอยู่แล้ว (แต่ยังไม่มีเรท) ให้หารหาเรท
+        else if (f && t) {
+            inputRate.value = (t / f).toFixed(4);
+        }
+    });
+
+    // 2. ถ้าพิมพ์ช่องอัตราแลกเปลี่ยน
+    inputRate.addEventListener('input', () => {
+        let f = parseFloat(amtF.value);
+        let r = parseFloat(inputRate.value);
+        // มีต่างประเทศและเรท ให้หาบาท
+        if(f && r) {
+            amtTHB.value = (f * r).toFixed(2);
+        }
+    });
+
+    // 3. ถ้าพิมพ์ช่องเงินบาท (THB)
+    amtTHB.addEventListener('input', () => {
+        let f = parseFloat(amtF.value);
+        let t = parseFloat(amtTHB.value);
+        // มีต่างประเทศและบาท ให้หาเรท
+        if(f && t) {
+            inputRate.value = (t / f).toFixed(4);
+        }
+    });
+    // --------------------------------
 
     function loadData() {
         document.getElementById('dash-loading').style.display = 'block';
@@ -388,12 +419,10 @@
             });
         }
 
-        // อัปเดตการ์ดรวมกำไร/ขาดทุน
         const totalCard = document.getElementById('total-profit-thb');
         totalCard.innerText = `${grandTotalTHB > 0 ? '+' : ''}${grandTotalTHB.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         totalCard.className = `total-value ${grandTotalTHB >= 0 ? 'positive' : 'negative'}`;
 
-        // อัปเดตการ์ดแยกสกุลเงิน (2 แถว)
         ['GBP', 'EUR', 'USD'].forEach(curr => {
             let netF = sums[curr].f;
             let netTHB = sums[curr].thb;
@@ -447,7 +476,6 @@
         document.getElementById('transaction-list').innerHTML = html;
     }
 
-    // Submit Data
     document.getElementById('forexForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -457,7 +485,7 @@
         loading.style.display = 'block';
 
         const payload = {
-            date: document.getElementById('txDate').value, // ⚠️ ส่งวันที่ไปบันทึก
+            date: document.getElementById('txDate').value,
             currency: document.getElementById('currency').value,
             type: document.getElementById('type').value,
             amountForeign: document.getElementById('amountForeign').value,
@@ -472,13 +500,12 @@
         .then(res => res.json())
         .then(data => {
             if(data.status === 'success'){
-                // ล้างค่าในฟอร์มทุกช่อง
                 document.getElementById('forexForm').reset();
                 document.getElementById('amountForeign').value = '';
                 document.getElementById('rate').value = '';
                 document.getElementById('amountTHB').value = '';
                 document.getElementById('note').value = '';
-                setDefaultDateTime(); // เซ็ตวันที่กลับเป็นเวลาปัจจุบัน
+                setDefaultDateTime(); 
                 
                 showDashboard(); 
                 loadData();
