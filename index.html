@@ -182,21 +182,14 @@
             display: inline;
         }
 
-        /* 🔥 ปรับปุ่มบนมือถือให้กลายเป็น Icon เล็กๆ อยู่บรรทัดเดียวกัน */
+        /* ปรับปุ่มบนมือถือให้เล็กลง ซ่อนข้อความ */
         @media (max-width: 500px) {
-            .app-header h2 {
-                font-size: 17px; /* ลดขนาดตัวอักษรนิดหน่อยเพื่อไม่ให้เบียด */
-            }
-            .btn-text { 
-                display: none; /* ซ่อนข้อความในมือถือ */
-            }
-            .summary-btn, .logout-btn {
-                padding: 6px 10px;
-                font-size: 16px; /* ขยายขนาด icon ให้กดง่าย */
-            }
+            .app-header h2 { font-size: 17px; }
+            .btn-text { display: none; }
+            .summary-btn, .logout-btn { padding: 6px 10px; font-size: 16px; }
         }
 
-        /* --- Top Summary Cards (ฝาก, ถอน, สุทธิ) --- */
+        /* --- Top Summary Cards --- */
         .top-summary-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -221,229 +214,49 @@
             box-shadow: 0 4px 15px var(--primary-glow); 
         }
         
-        .top-title { 
-            font-size: 13px; 
-            color: var(--text-muted); 
-            margin-bottom: 8px; 
-            font-weight: 500; 
-        }
+        .top-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .top-value { font-size: 24px; font-weight: 600; }
 
-        .top-value { 
-            font-size: 24px; 
-            font-weight: 600; 
-        }
-
-        /* Responsive สำหรับมือถือ: เอากำไรไว้บนสุด */
         @media (max-width: 600px) {
-            .top-summary-grid { 
-                grid-template-columns: 1fr 1fr; 
-                gap: 10px; 
-            }
-            .profit-card { 
-                order: -1; 
-                grid-column: span 2; 
-            } 
+            .top-summary-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .profit-card { order: -1; grid-column: span 2; } 
         }
 
-        /* --- Currency Sub Cards (GBP, EUR) --- */
-        .dash-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
-            margin-bottom: 25px; 
-        }
-
-        .dash-card { 
-            background: var(--surface-dark); 
-            padding: 15px 12px; 
-            border-radius: 14px; 
-            text-align: center; 
-            border: 1px solid var(--border); 
-            display: flex; 
-            flex-direction: column;
-        }
-
-        .dash-title { 
-            font-size: 14px; 
-            color: var(--text-muted); 
-            margin-bottom: 6px; 
-            font-weight: 500; 
-        }
-
-        .dash-value { 
-            font-size: 18px; 
-            font-weight: 600; 
-        }
-
-        .dash-sub-value { 
-            font-size: 12px; 
-            color: var(--text-muted); 
-            margin-top: 4px; 
-        }
+        /* --- Currency Sub Cards --- */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .dash-card { background: var(--surface-dark); padding: 15px 12px; border-radius: 14px; text-align: center; border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .dash-title { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+        .dash-value { font-size: 18px; font-weight: 600; }
+        .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
         
-        /* สถิติย่อย ฝาก/ถอน ในสกุลเงิน */
-        .dash-stats {
-            display: flex; 
-            flex-direction: column; 
-            gap: 6px;
-            margin-top: 10px; 
-            padding-top: 10px; 
-            border-top: 1px dashed var(--border);
-            font-size: 12px;
-        }
-
-        .dash-stats > div {
-            display: flex; 
-            justify-content: space-between; 
-            width: 100%;
-        }
-
-        .stat-label { 
-            color: var(--text-muted); 
-            font-weight: 500; 
-        }
+        .dash-stats { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12px; }
+        .dash-stats > div { display: flex; justify-content: space-between; width: 100%; }
+        .stat-label { color: var(--text-muted); font-weight: 500; }
 
         /* --- Filter Panel --- */
-        .toggle-filter-btn {
-            background: var(--surface-dark); 
-            border: 1px solid var(--border); 
-            color: var(--text-main);
-            width: 100%; 
-            padding: 12px 15px; 
-            border-radius: 12px; 
-            font-size: 15px;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            cursor: pointer; 
-            margin-bottom: 10px; 
-            font-weight: 500; 
-            margin-top: 0;
-        }
-
-        .toggle-filter-btn:hover { 
-            background: var(--surface-hover); 
-        }
-
-        .controls-panel { 
-            background: var(--surface-dark); 
-            padding: 15px; 
-            border-radius: 14px; 
-            border: 1px solid var(--border); 
-            margin-bottom: 25px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
-
-        .controls-row { 
-            display: flex; 
-            gap: 10px; 
-            align-items: center; 
-            flex-wrap: wrap; 
-        }
-
-        .controls-row select, .controls-row input { 
-            margin: 0; 
-            padding: 10px; 
-            font-size: 14px; 
-            flex: 1; 
-            min-width: 120px; 
-        }
-
-        .controls-row button { 
-            margin: 0; 
-            padding: 10px 16px; 
-            font-size: 14px; 
-            width: auto; 
-            flex-shrink: 0; 
-        }
-
-        .separator { 
-            color: var(--text-muted); 
-            font-size: 14px; 
-        }
-
-        .archive-btn {
-            background-color: #334155;
-            border: 1px solid var(--error);
-            color: var(--error);
-            padding: 12px;
-            margin-top: 10px;
-        }
-        
-        .archive-btn:hover {
-            background-color: rgba(248, 113, 113, 0.1);
-        }
+        .toggle-filter-btn { background: var(--surface-dark); border: 1px solid var(--border); color: var(--text-main); width: 100%; padding: 12px 15px; border-radius: 12px; font-size: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px; font-weight: 500; margin-top: 0; }
+        .toggle-filter-btn:hover { background: var(--surface-hover); }
+        .controls-panel { background: var(--surface-dark); padding: 15px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 25px; display: flex; flex-direction: column; gap: 12px; }
+        .controls-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .controls-row select, .controls-row input { margin: 0; padding: 10px; font-size: 14px; flex: 1; min-width: 120px; }
+        .controls-row button { margin: 0; padding: 10px 16px; font-size: 14px; width: auto; flex-shrink: 0; }
+        .separator { color: var(--text-muted); font-size: 14px; }
+        .archive-btn { background-color: #334155; border: 1px solid var(--error); color: var(--error); padding: 12px; margin-top: 10px; }
+        .archive-btn:hover { background-color: rgba(248, 113, 113, 0.1); }
 
         /* --- Transaction List Header --- */
-        .section-header { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            margin-bottom: 15px; 
-        }
-
-        .section-title { 
-            font-size: 16px; 
-            font-weight: 600; 
-            color: var(--text-muted); 
-            margin: 0; 
-        }
-        
-        /* Dropdown จัดเรียงข้อมูล 50-50 */
-        .filter-sort-group {
-            display: flex; 
-            gap: 10px; 
-            width: 100%;
-        }
-
-        .filter-sort-group select {
-            margin: 0; 
-            padding: 8px 10px; 
-            font-size: 13px; 
-            border-radius: 8px; 
-            flex: 1; 
-        }
+        .section-header { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
+        .filter-sort-group { display: flex; gap: 10px; width: 100%; }
+        .filter-sort-group select { margin: 0; padding: 8px 10px; font-size: 13px; border-radius: 8px; flex: 1; }
         
         /* --- Transaction List Items --- */
-        .list-container { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
-
-        .list-item { 
-            background: var(--surface-dark); 
-            border-radius: 14px; 
-            padding: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            gap: 15px;
-        }
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
+        .list-item { background: var(--surface-dark); border-radius: 14px; padding: 15px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
         
-        .item-icon-wrapper { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 10px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 18px; 
-            margin-right: 15px; 
-            flex-shrink: 0; 
-        }
-
-        .deposit .item-icon-wrapper { 
-            background: rgba(248, 113, 113, 0.15); 
-            color: var(--error); 
-        }
-
-        .withdraw .item-icon-wrapper { 
-            background: rgba(52, 211, 153, 0.15); 
-            color: var(--secondary); 
-        }
+        .item-icon-wrapper { width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; margin-right: 15px; flex-shrink: 0; }
+        .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
+        .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
 
         .item-left { display: flex; align-items: center; flex: 1; overflow: hidden; }
         .item-main { display: flex; flex-direction: column; }
@@ -455,183 +268,38 @@
         .val-foreign { font-weight: 600; font-size: 16px; }
         .val-thb { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
         
-        /* ปุ่มแก้ไข/ลบ */
-        .item-actions { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            padding-left: 15px; 
-            border-left: 1px solid rgba(255,255,255,0.05); 
-            flex-shrink: 0;
-        }
-
-        .action-btn { 
-            background: transparent; 
-            border: 1px solid var(--border); 
-            color: var(--text-muted); 
-            padding: 6px 10px; 
-            border-radius: 8px; 
-            font-size: 12px; 
-            font-weight: 500; 
-            cursor: pointer; 
-            margin: 0; 
-            min-width: 65px; 
-            text-align: center; 
-            white-space: nowrap; 
-            transition: 0.2s;
-        }
-
+        .item-actions { display: flex; flex-direction: column; gap: 8px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
+        .action-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; margin: 0; min-width: 65px; text-align: center; white-space: nowrap; transition: 0.2s; }
         .action-btn.edit:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
         .action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
         
-        /* Utils */
         .positive { color: var(--secondary) !important; }
         .negative { color: var(--error) !important; }
         
-        .loading { 
-            text-align: center; 
-            color: var(--primary); 
-            display: none; 
-            padding: 20px; 
-            font-weight: 500; 
-            font-size: 15px; 
-        }
-
-        .spinner { 
-            display: inline-block; 
-            width: 20px; 
-            height: 20px; 
-            border: 3px solid rgba(129,140,248,0.3); 
-            border-radius: 50%; 
-            border-top-color: var(--primary); 
-            animation: spin 1s ease-in-out infinite; 
-            vertical-align: middle; 
-            margin-right: 8px; 
-        }
-
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
+        .loading { text-align: center; color: var(--primary); display: none; padding: 20px; font-weight: 500; font-size: 15px; }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(129,140,248,0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* FAB Button */
-        .fab { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 30px; 
-            background: var(--primary); 
-            color: #fff; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 30px; 
-            box-shadow: 0 8px 20px var(--primary-glow); 
-            cursor: pointer; 
-            border: none; 
-            z-index: 1000; 
-            transition: 0.2s;
-        }
-
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 30px; background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; transition: 0.2s; }
         .fab:hover { transform: scale(1.05); }
 
         /* Form section */
-        .form-header { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 25px; 
-            gap: 15px; 
-        }
-
-        .back-btn { 
-            background: var(--surface-dark); 
-            width: 45px; 
-            height: 45px; 
-            border-radius: 12px; 
-            border: 1px solid var(--border); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            color: #fff; 
-            text-decoration: none; 
-            font-size: 20px; 
-            margin: 0; 
-            padding: 0; 
-            cursor: pointer; 
-        }
-
+        .form-header { display: flex; align-items: center; margin-bottom: 25px; gap: 15px; }
+        .back-btn { background: var(--surface-dark); width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 20px; margin: 0; padding: 0; cursor: pointer; }
         .hidden { display: none !important; }
 
         /* --- Modal Summary Styles --- */
-        .modal { 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); 
-            z-index: 2000; 
-            display: none; 
-            padding: 20px; 
-            overflow-y: auto; 
-        }
-
-        .modal-content { 
-            background: var(--bg-dark); 
-            border-radius: 20px; 
-            max-width: 500px; 
-            margin: 20px auto; 
-            padding: 20px; 
-            border: 1px solid var(--border); 
-        }
-
-        .modal-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px; 
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            color: var(--primary);
-        }
-
-        .year-block { 
-            margin-bottom: 10px; 
-            background: var(--surface-dark); 
-            border-radius: 12px; 
-            overflow: hidden; 
-        }
-
-        .year-header { 
-            padding: 15px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: space-between; 
-            font-weight: 600; 
-            border-bottom: 1px solid var(--border); 
-        }
-
-        .month-list { 
-            display: none; 
-            padding: 10px; 
-        }
-
-        .month-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 10px; 
-            border-bottom: 1px dashed rgba(255,255,255,0.05); 
-            font-size: 14px; 
-        }
-
-        .month-item:last-child {
-            border-bottom: none;
-        }
-
-        .month-details { 
-            text-align: right; 
-        }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; padding: 20px; overflow-y: auto; }
+        .modal-content { background: var(--bg-dark); border-radius: 20px; max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid var(--border); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; color: var(--primary); }
+        .year-block { margin-bottom: 10px; background: var(--surface-dark); border-radius: 12px; overflow: hidden; }
+        .year-header { padding: 15px; cursor: pointer; display: flex; justify-content: space-between; font-weight: 600; border-bottom: 1px solid var(--border); }
+        .month-list { display: none; padding: 10px; }
+        .month-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px dashed rgba(255,255,255,0.05); font-size: 14px; }
+        .month-item:last-child { border-bottom: none; }
+        .month-details { text-align: right; }
     </style>
 </head>
 <body>
@@ -677,14 +345,8 @@
                 <div class="dash-value" id="sum-gbp-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-gbp-thb">฿0.00</div>
                 <div class="dash-stats">
-                    <div>
-                        <span class="stat-label">ฝาก:</span>
-                        <span class="negative" id="sum-gbp-dep">-0.00</span>
-                    </div>
-                    <div>
-                        <span class="stat-label">ถอน:</span>
-                        <span class="positive" id="sum-gbp-wid">+0.00</span>
-                    </div>
+                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-gbp-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-gbp-wid">+0.00</span></div>
                 </div>
             </div>
             <div class="dash-card">
@@ -692,14 +354,8 @@
                 <div class="dash-value" id="sum-eur-foreign">0.00</div>
                 <div class="dash-sub-value" id="sum-eur-thb">฿0.00</div>
                 <div class="dash-stats">
-                    <div>
-                        <span class="stat-label">ฝาก:</span>
-                        <span class="negative" id="sum-eur-dep">-0.00</span>
-                    </div>
-                    <div>
-                        <span class="stat-label">ถอน:</span>
-                        <span class="positive" id="sum-eur-wid">+0.00</span>
-                    </div>
+                    <div><span class="stat-label">ฝาก:</span><span class="negative" id="sum-eur-dep">-0.00</span></div>
+                    <div><span class="stat-label">ถอน:</span><span class="positive" id="sum-eur-wid">+0.00</span></div>
                 </div>
             </div>
         </div>
@@ -735,10 +391,13 @@
                     <option value="12">ธันวาคม</option>
                 </select>
                 <select id="filterYear" onchange="filterData()">
-                    <option value="">ปี</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                    <option value="2026">2026</option>
+                    <option value="">ทุกปี</option>
+                    <script>
+                        const currY = new Date().getFullYear();
+                        for(let y = 2024; y <= currY + 2; y++) {
+                            document.write(`<option value="${y}">${y}</option>`);
+                        }
+                    </script>
                 </select>
             </div>
             
@@ -758,7 +417,7 @@
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ตตัวกรอง</button>
             </div>
 
-            <button class="archive-btn" onclick="archiveData()">📦 ย้ายข้อมูลไป Archive (ปิดรอบปีปัจจุบัน)</button>
+            <button class="archive-btn" onclick="archiveData()">📦 ย้ายข้อมูลไป Archive (แยกเฉพาะปีเก่า)</button>
         </div>
 
         <div class="section-header">
@@ -784,8 +443,7 @@
             <div class="spinner"></div> กำลังโหลดข้อมูล...
         </div>
         
-        <div class="list-container" id="transaction-list">
-            </div>
+        <div class="list-container" id="transaction-list"></div>
 
         <button class="fab" onclick="showForm()">+</button>
     </div>
@@ -796,8 +454,7 @@
                 <h3>📊 สรุปผลการเทรดรวม</h3>
                 <button onclick="closeSummary()" style="width:auto; padding:8px 16px; margin:0; background:var(--surface-hover);">ปิด</button>
             </div>
-            <div id="summary-list-container">
-                </div>
+            <div id="summary-list-container"></div>
         </div>
     </div>
 
@@ -853,8 +510,8 @@
     let monthlySummaryData = {};
     const SESSION_DAYS = 5;
     let editingRowNumber = null;
+    let editingSheetName = null; // ตัวแปรสำหรับจำว่าแก้ไขของ Sheet ไหน
 
-    // ตั้งค่าปฏิทิน
     const datePicker = flatpickr("#txDate", {
         enableTime: true,
         dateFormat: "Y-m-d H:i",
@@ -902,6 +559,7 @@
     function showMainApp() {
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('main-container').classList.remove('hidden');
+        // เอาการล็อกค่าปีอัตโนมัติออก ให้ผู้ใช้เห็นทั้งหมดแต่แรก
         loadData();
     }
 
@@ -919,6 +577,7 @@
 
     function showForm() {
         editingRowNumber = null;
+        editingSheetName = null;
         document.getElementById('form-title').innerText = "บันทึก ฝาก/ถอน";
         document.getElementById('submitBtn').innerText = "บันทึกข้อมูล";
         
@@ -941,11 +600,14 @@
         window.scrollTo(0, 0);
     }
 
-    function editTransaction(rowNum) {
-        const item = allData.find(d => d.rowNumber === rowNum);
+    // 🔥 ปรับให้ค้นหาโดยใช้ sheetName ควบคู่ด้วย เพื่อป้องกันบั๊กแก้ผิด Sheet
+    function editTransaction(sheetName, rowNum) {
+        const item = allData.find(d => d.rowNumber === rowNum && d.sheetName === sheetName);
         if (!item) return;
 
         editingRowNumber = rowNum;
+        editingSheetName = sheetName; // จำชื่อ Sheet
+
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
@@ -963,13 +625,14 @@
         window.scrollTo(0, 0);
     }
 
-    function deleteTransaction(rowNum) {
+    // 🔥 ส่งชื่อ Sheet ไปลบด้วย
+    function deleteTransaction(sheetName, rowNum) {
         if(confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?")) {
             document.getElementById('dash-loading').style.display = 'block';
             fetch(SCRIPT_URL, {
                 method: 'POST', 
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                body: JSON.stringify({ action: "delete", rowNumber: rowNum })
+                body: JSON.stringify({ action: "delete", rowNumber: rowNum, sheetName: sheetName })
             })
             .then(res => res.json())
             .then(data => {
@@ -985,7 +648,7 @@
     }
 
     function archiveData() {
-        if(confirm("⚠️ คำเตือน!\n\nระบบจะทำการย้ายข้อมูลทั้งหมดในหน้าประวัติ ไปต่อท้ายชีต Archive เพื่อให้หน้าจอหลักพร้อมสำหรับการบันทึกของปีถัดไป\n\nคุณต้องการดำเนินการต่อหรือไม่?")) {
+        if(confirm("⚠️ คำเตือน!\n\nระบบจะทำการคัดแยกข้อมูลที่ 'เก่ากว่าปีปัจจุบัน' ไปเก็บไว้ในแฟ้ม Archive \nเพื่อให้หน้าแอปทำงานได้รวดเร็วขึ้น\n\nคุณต้องการดำเนินการต่อหรือไม่?")) {
             document.getElementById('dash-loading').style.display = 'block';
             fetch(SCRIPT_URL, {
                 method: 'POST', 
@@ -995,7 +658,7 @@
             .then(res => res.json())
             .then(data => {
                 if(data.status === 'success') { 
-                    alert('✅ ทำการย้ายข้อมูลไป Archive เรียบร้อยแล้ว!');
+                    alert('✅ ทำการย้ายข้อมูลปีเก่าไป Archive เรียบร้อยแล้ว!');
                     loadData(); 
                 } else { 
                     alert('❌ เกิดข้อผิดพลาด: ' + data.message); 
@@ -1005,7 +668,6 @@
         }
     }
 
-    // Modal สรุปผล
     function showSummary() {
         const container = document.getElementById('summary-list-container');
         container.innerHTML = '';
@@ -1070,7 +732,6 @@
         document.getElementById('summary-modal').style.display = 'none'; 
     }
 
-    // คำนวณ 2 ทาง
     const amtF = document.getElementById('amountForeign');
     const inputRate = document.getElementById('rate');
     const amtTHB = document.getElementById('amountTHB');
@@ -1117,7 +778,7 @@
     function clearFilter() {
         document.getElementById('filterDay').value = ''; 
         document.getElementById('filterMonth').value = ''; 
-        document.getElementById('filterYear').value = '';
+        document.getElementById('filterYear').value = ''; // ให้โชว์ทุกปีตามเดิม
         document.getElementById('startDate').value = ''; 
         document.getElementById('endDate').value = ''; 
         document.getElementById('limitRows').value = '30';
@@ -1265,6 +926,7 @@
                 
                 const noteHtml = item.note ? `<div class="item-note">📝 ${item.note}</div>` : '';
 
+                // 🔥 ส่ง sheetName ไปด้วยเวลาคลิกปุ่ม
                 html += `
                 <div class="list-item ${mainClass}">
                     <div class="item-left">
@@ -1280,8 +942,8 @@
                         <div class="val-thb">฿${parseFloat(item.amountTHB).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn edit" onclick="editTransaction(${item.rowNumber})">✏️ แก้ไข</button>
-                        <button class="action-btn delete" onclick="deleteTransaction(${item.rowNumber})">🗑️ ลบ</button>
+                        <button class="action-btn edit" onclick="editTransaction('${item.sheetName}', ${item.rowNumber})">✏️ แก้ไข</button>
+                        <button class="action-btn delete" onclick="deleteTransaction('${item.sheetName}', ${item.rowNumber})">🗑️ ลบ</button>
                     </div>
                 </div>`;
             });
@@ -1306,6 +968,7 @@
         const payload = {
             action: editingRowNumber ? "edit" : "add",
             rowNumber: editingRowNumber,
+            sheetName: editingSheetName, // 🔥 ส่งชื่อ Sheet กลับไปด้วย
             date: payloadDate,
             currency: document.getElementById('currency').value,
             type: document.getElementById('type').value,
@@ -1324,6 +987,7 @@
         .then(data => {
             if(data.status === 'success'){ 
                 editingRowNumber = null; 
+                editingSheetName = null;
                 document.getElementById('forexForm').reset(); 
                 showDashboard(); 
                 loadData(); 
