@@ -39,21 +39,10 @@
 
         /* --- Login Section --- */
         #login-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
         .login-card {
-            background-color: var(--surface-dark);
-            border-radius: 20px;
-            padding: 30px 25px;
-            width: 100%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
-            text-align: center;
+            background-color: var(--surface-dark); border-radius: 20px; padding: 30px 25px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center;
         }
 
         h2 { font-weight: 600; margin-top: 0; margin-bottom: 25px; }
@@ -61,94 +50,45 @@
 
         /* --- Forms & Inputs --- */
         input, select {
-            width: 100%;
-            padding: 12px 14px;
-            margin-top: 6px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-size: 14px;
-            transition: all 0.3s;
-            outline: none;
+            width: 100%; padding: 12px 14px; margin-top: 6px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 12px; background-color: var(--bg-dark); color: var(--text-main); font-size: 14px; outline: none;
         }
-        input:focus, select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-glow);
-        }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
         label { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-left: 4px; }
 
         button {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-            box-shadow: 0 4px 12px var(--primary-glow);
+            width: 100%; padding: 14px; background-color: var(--primary); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px;
         }
         button:active { transform: scale(0.98); }
-        .btn-outline {
-            background-color: transparent; border: 1px solid var(--border); color: var(--text-muted); box-shadow: none;
-        }
+        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-muted); box-shadow: none; }
         .btn-outline:active { background-color: var(--surface-hover); }
 
         /* --- Dashboard --- */
-        .app-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 10px;
-        }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 10px; }
         .app-header h2 { margin: 0; font-size: 22px; color: #fff;}
-
-        .logout-btn {
-            background: transparent; border: 1px solid var(--error); color: var(--error);
-            width: auto; padding: 6px 12px; font-size: 13px; margin: 0; border-radius: 8px; box-shadow: none;
-        }
+        .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); width: auto; padding: 6px 12px; font-size: 13px; margin: 0; border-radius: 8px; }
 
         /* Summary Grid */
-        .dash-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px;
-        }
-        .dash-card {
-            background: linear-gradient(145deg, var(--surface-dark), var(--bg-dark)); padding: 14px 8px;
-            border-radius: 14px; text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .dash-card { background: linear-gradient(145deg, var(--surface-dark), var(--bg-dark)); padding: 14px 8px; border-radius: 14px; text-align: center; border: 1px solid var(--border); }
         .dash-title { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
         .dash-value { font-size: 16px; font-weight: 600; }
 
-        /* Controls Panel (Filters + Limits grouped together) */
-        .section-header { margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
-        
-        .controls-row {
-            display: flex; gap: 8px; margin-bottom: 10px; align-items: center;
+        /* Controls Panel (กางออกมาให้หมด) */
+        .controls-panel {
+            background: var(--surface-dark); padding: 15px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px; display: flex; flex-direction: column; gap: 10px;
         }
-        .controls-row select { margin: 0; padding: 10px; font-size: 13px; flex: 1; }
-        .controls-row button { margin: 0; padding: 10px 14px; font-size: 13px; width: auto; flex-shrink: 0;}
-        
-        .dynamic-box {
-            background: var(--surface-dark); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border);
-        }
-        .dynamic-box input { margin: 0; }
-        .custom-range-box { display: flex; align-items: center; gap: 10px; width: 100%; }
-        .custom-range-box span { color: var(--text-muted); font-size: 13px; flex-shrink: 0; }
+        .controls-row { display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; }
+        .controls-row select, .controls-row input { margin: 0; padding: 10px; font-size: 13px; min-width: 0; flex: 1; }
+        .controls-row button { margin: 0; padding: 10px 14px; font-size: 13px; width: auto; flex-shrink: 0; }
+        .separator { color: var(--text-muted); font-size: 13px; flex-shrink: 0; }
 
         /* Transaction List */
+        .section-header { margin-bottom: 12px; }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
         .list-container { display: flex; flex-direction: column; gap: 10px; }
-        .list-item { 
-            background: var(--surface-dark); border-radius: 14px; padding: 14px;
-            display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent;
-        }
+        .list-item { background: var(--surface-dark); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; }
         
-        .item-icon-wrapper {
-            width: 36px; height: 36px; border-radius: 10px; display: flex; justify-content: center; align-items: center;
-            font-size: 18px; margin-right: 12px; flex-shrink: 0;
-        }
+        .item-icon-wrapper { width: 36px; height: 36px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; }
         .deposit .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
         .withdraw .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
 
@@ -170,18 +110,11 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* FAB */
-        .fab {
-            position: fixed; bottom: 25px; right: 25px; width: 56px; height: 56px; border-radius: 28px;
-            background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center;
-            font-size: 26px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000;
-        }
+        .fab { position: fixed; bottom: 25px; right: 25px; width: 56px; height: 56px; border-radius: 28px; background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 26px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; }
 
         .form-header { display: flex; align-items: center; margin-bottom: 20px; gap: 15px; }
         .back-btn { background: var(--surface-dark); width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 18px; margin: 0; padding: 0; box-shadow: none; }
-        .form-header h2 { margin: 0; font-size: 20px; }
-
         .hidden { display: none !important; }
-        .hide-element { display: none !important; } /* เอาไว้ซ่อน input ที่ไม่ได้เลือก */
     </style>
 </head>
 <body>
@@ -189,7 +122,6 @@
 <div id="login-section">
     <div class="login-card">
         <h2 class="text-primary">Forex App Pro</h2>
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">กรุณาใส่รหัสผ่านเพื่อเข้าใช้งาน</p>
         <input type="password" id="password" placeholder="รหัสผ่าน (กด Enter)" onkeypress="handleLoginKey(event)" style="text-align: center;">
         <button onclick="checkLogin()">เข้าสู่ระบบ</button>
         <p id="login-error" class="hidden" style="color: var(--error); font-size: 14px; margin-top: 15px;">รหัสผ่านไม่ถูกต้อง!</p>
@@ -212,36 +144,57 @@
             <div class="dash-card"><div class="dash-title">USD</div><div class="dash-value" id="sum-usd">0.00</div></div>
         </div>
 
-        <div class="section-header">
-            <h3 class="section-title">ประวัติรายการ</h3>
-        </div>
-
-        <div class="controls-row">
-            <select id="filterType" onchange="toggleFilterInputs()">
-                <option value="all">ทุกช่วงเวลา</option>
-                <option value="day">รายวัน</option>
-                <option value="month">รายเดือน</option>
-                <option value="year">รายปี</option>
-                <option value="custom">กำหนดช่วงเอง</option>
-            </select>
-            <select id="limitRows" onchange="filterData()">
-                <option value="30">แสดง 30 รายการ</option>
-                <option value="50">แสดง 50 รายการ</option>
-                <option value="100">แสดง 100 รายการ</option>
-                <option value="all">แสดงทั้งหมด</option>
-            </select>
-            <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
-        </div>
-
-        <div id="dynamic-inputs" class="dynamic-box hidden">
-            <input type="date" id="filterDay" class="hide-element" onchange="filterData()">
-            <input type="month" id="filterMonth" class="hide-element" onchange="filterData()">
-            <input type="number" id="filterYear" class="hide-element" placeholder="ระบุปี ค.ศ. (เช่น 2024)" oninput="filterData()">
-            <div id="filterCustom" class="hide-element custom-range-box">
+        <div class="controls-panel">
+            <div class="controls-row">
+                <select id="filterDay" onchange="filterData()">
+                    <option value="">วัน</option>
+                    <script>
+                        for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);
+                    </script>
+                </select>
+                <select id="filterMonth" onchange="filterData()">
+                    <option value="">เดือน</option>
+                    <option value="1">มกราคม</option>
+                    <option value="2">กุมภาพันธ์</option>
+                    <option value="3">มีนาคม</option>
+                    <option value="4">เมษายน</option>
+                    <option value="5">พฤษภาคม</option>
+                    <option value="6">มิถุนายน</option>
+                    <option value="7">กรกฎาคม</option>
+                    <option value="8">สิงหาคม</option>
+                    <option value="9">กันยายน</option>
+                    <option value="10">ตุลาคม</option>
+                    <option value="11">พฤศจิกายน</option>
+                    <option value="12">ธันวาคม</option>
+                </select>
+                <select id="filterYear" onchange="filterData()">
+                    <option value="">ปี</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>
+            </div>
+            
+            <div class="controls-row">
                 <input type="date" id="startDate" onchange="filterData()">
-                <span>ถึง</span>
+                <span class="separator">ถึง</span>
                 <input type="date" id="endDate" onchange="filterData()">
             </div>
+            
+            <div class="controls-row">
+                <select id="limitRows" onchange="filterData()">
+                    <option value="30">แสดง 30 รายการ</option>
+                    <option value="50">แสดง 50 รายการ</option>
+                    <option value="100">แสดง 100 รายการ</option>
+                    <option value="all">แสดงทั้งหมด</option>
+                </select>
+                <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h3 class="section-title">ประวัติรายการ</h3>
         </div>
 
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
@@ -270,10 +223,10 @@
                 <option value="Withdraw">ถอน (Withdraw)</option>
             </select>
 
-            <label>จำนวนเงินต่างประเทศ (Foreign Amount)</label>
+            <label>จำนวนเงินต่างประเทศ</label>
             <input type="number" id="amountForeign" step="0.01" placeholder="0.00" required>
 
-            <label>อัตราแลกเปลี่ยน (Exchange Rate)</label>
+            <label>อัตราแลกเปลี่ยน</label>
             <input type="number" id="rate" step="0.0001" placeholder="เช่น 45.50" required>
 
             <label>จำนวนเงินบาท (THB) <span style="color:var(--secondary);">(คำนวณอัตโนมัติ)</span></label>
@@ -295,21 +248,15 @@
     let allData = [];
     const SESSION_DAYS = 5;
 
-    window.onload = function() {
-        checkSession();
-    };
+    window.onload = function() { checkSession(); };
 
     function checkSession() {
         const loginTime = localStorage.getItem('forexLoginTimestamp');
         if (loginTime) {
             const now = new Date().getTime();
             const diffDays = (now - parseInt(loginTime)) / (1000 * 3600 * 24);
-            if (diffDays <= SESSION_DAYS) {
-                showMainApp();
-                return;
-            } else {
-                localStorage.removeItem('forexLoginTimestamp');
-            }
+            if (diffDays <= SESSION_DAYS) { showMainApp(); return; } 
+            else { localStorage.removeItem('forexLoginTimestamp'); }
         }
         document.getElementById('login-section').style.display = 'flex';
     }
@@ -317,8 +264,7 @@
     function handleLoginKey(e) { if(e.key === 'Enter') checkLogin(); }
     
     function checkLogin() {
-        const pass = document.getElementById('password').value;
-        if (pass === 'spectre') {
+        if (document.getElementById('password').value === 'spectre') {
             localStorage.setItem('forexLoginTimestamp', new Date().getTime().toString());
             showMainApp();
         } else {
@@ -326,10 +272,7 @@
         }
     }
 
-    function logout() {
-        localStorage.removeItem('forexLoginTimestamp');
-        location.reload(); 
-    }
+    function logout() { localStorage.removeItem('forexLoginTimestamp'); location.reload(); }
 
     function showMainApp() {
         document.getElementById('login-section').style.display = 'none';
@@ -353,9 +296,7 @@
     const amtTHB = document.getElementById('amountTHB');
 
     function calculate() {
-        if(amtF.value && inputRate.value) {
-            amtTHB.value = (parseFloat(amtF.value) * parseFloat(inputRate.value)).toFixed(2);
-        }
+        if(amtF.value && inputRate.value) amtTHB.value = (parseFloat(amtF.value) * parseFloat(inputRate.value)).toFixed(2);
     }
     amtF.addEventListener('input', calculate);
     inputRate.addEventListener('input', calculate);
@@ -376,84 +317,48 @@
             .finally(() => document.getElementById('dash-loading').style.display = 'none');
     }
 
-    function toggleFilterInputs() {
-        const type = document.getElementById('filterType').value;
-        const dynContainer = document.getElementById('dynamic-inputs');
-        
-        if (type === 'all') {
-            dynContainer.classList.add('hidden');
-        } else {
-            dynContainer.classList.remove('hidden');
-            // ซ่อนทุกอันก่อน
-            document.getElementById('filterDay').classList.add('hide-element');
-            document.getElementById('filterMonth').classList.add('hide-element');
-            document.getElementById('filterYear').classList.add('hide-element');
-            document.getElementById('filterCustom').classList.add('hide-element');
-            // โชว์เฉพาะที่เลือก
-            if(type === 'day') document.getElementById('filterDay').classList.remove('hide-element');
-            if(type === 'month') document.getElementById('filterMonth').classList.remove('hide-element');
-            if(type === 'year') document.getElementById('filterYear').classList.remove('hide-element');
-            if(type === 'custom') document.getElementById('filterCustom').classList.remove('hide-element');
-        }
-        filterData();
-    }
-
     function clearFilter() {
-        document.getElementById('filterType').value = 'all';
-        document.getElementById('limitRows').value = '30';
         document.getElementById('filterDay').value = '';
         document.getElementById('filterMonth').value = '';
         document.getElementById('filterYear').value = '';
         document.getElementById('startDate').value = '';
         document.getElementById('endDate').value = '';
-        toggleFilterInputs(); 
+        document.getElementById('limitRows').value = '30';
+        filterData(); 
     }
 
     function filterData() {
-        const type = document.getElementById('filterType').value;
+        const selDay = document.getElementById('filterDay').value;
+        const selMonth = document.getElementById('filterMonth').value;
+        const selYear = document.getElementById('filterYear').value;
+        const start = document.getElementById('startDate').value;
+        const end = document.getElementById('endDate').value;
         const limit = document.getElementById('limitRows').value;
         
-        let filtered = allData;
+        let filtered = allData.filter(item => {
+            if(!item.date) return false;
+            const d = new Date(item.date);
+            
+            // เช็ค Dropdown วัน เดือน ปี
+            if(selDay && d.getDate().toString() !== selDay) return false;
+            if(selMonth && (d.getMonth() + 1).toString() !== selMonth) return false;
+            if(selYear && d.getFullYear().toString() !== selYear) return false;
 
-        if(type !== 'all') {
-            filtered = allData.filter(item => {
-                if(!item.date) return false;
-                const d = new Date(item.date);
-                const yyyy = d.getFullYear();
-                let mm = (d.getMonth() + 1).toString().padStart(2, '0');
-                let dd = d.getDate().toString().padStart(2, '0');
-
-                if (type === 'day') {
-                    const val = document.getElementById('filterDay').value;
-                    return val ? `${yyyy}-${mm}-${dd}` === val : true;
-                } else if (type === 'month') {
-                    const val = document.getElementById('filterMonth').value;
-                    return val ? `${yyyy}-${mm}` === val : true;
-                } else if (type === 'year') {
-                    const val = document.getElementById('filterYear').value;
-                    return val ? yyyy.toString() === val : true;
-                } else if (type === 'custom') {
-                    const start = document.getElementById('startDate').value;
-                    const end = document.getElementById('endDate').value;
-                    
-                    const itemTime = new Date(yyyy, d.getMonth(), d.getDate()).getTime(); 
-                    let passStart = true, passEnd = true;
-
-                    if (start) {
-                        const startD = new Date(start);
-                        startD.setHours(0,0,0,0);
-                        passStart = itemTime >= startD.getTime();
-                    }
-                    if (end) {
-                        const endD = new Date(end);
-                        endD.setHours(23,59,59,999);
-                        passEnd = d.getTime() <= endD.getTime();
-                    }
-                    return passStart && passEnd;
-                }
-                return true;
-            });
-        }
+            // เช็คกำหนดช่วงเอง (Start - End)
+            const itemTime = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+            if (start) {
+                const startD = new Date(start);
+                startD.setHours(0,0,0,0);
+                if(itemTime < startD.getTime()) return false;
+            }
+            if (end) {
+                const endD = new Date(end);
+                endD.setHours(23,59,59,999);
+                if(d.getTime() > endD.getTime()) return false;
+            }
+            
+            return true;
+        });
         
         renderSummary(filtered);
 
@@ -546,26 +451,18 @@
         };
 
         fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
+            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload)
         })
         .then(res => res.json())
         .then(data => {
             if(data.status === 'success'){
                 document.getElementById('forexForm').reset();
                 document.getElementById('amountTHB').value = '';
-                showDashboard();
-                loadData();
-            } else {
-                alert('❌ เกิดข้อผิดพลาด: ' + data.message);
-            }
+                showDashboard(); loadData();
+            } else { alert('❌ เกิดข้อผิดพลาด: ' + data.message); }
         })
         .catch(err => alert('❌ Error: ' + err))
-        .finally(() => {
-            btn.style.display = 'block';
-            loading.style.display = 'none';
-        });
+        .finally(() => { btn.style.display = 'block'; loading.style.display = 'none'; });
     });
 </script>
 
