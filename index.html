@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     
@@ -29,160 +28,31 @@
             --border: #334155;
         }
 
-        * { 
-            box-sizing: border-box; 
-            font-family: 'Prompt', sans-serif; 
-        }
-
-        body { 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 0; 
-            -webkit-tap-highlight-color: transparent; 
-        }
-        
-        .container { 
-            width: 100%; 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            padding-bottom: 90px; 
-        }
+        * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 90px; }
 
         /* --- Login Section --- */
-        #login-section { 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 20px; 
-        }
+        #login-section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .login-card { background-color: var(--surface-dark); border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; }
+        .login-card h2 { font-weight: 600; margin-top: 0; margin-bottom: 20px; font-size: 22px; color: var(--primary); }
 
-        .login-card { 
-            background-color: var(--surface-dark); 
-            border-radius: 20px; 
-            padding: 30px; 
-            width: 100%; 
-            max-width: 400px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
-            border: 1px solid var(--border); 
-            text-align: center; 
-        }
-
-        .login-card h2 { 
-            font-weight: 600; 
-            margin-top: 0; 
-            margin-bottom: 20px; 
-            font-size: 22px; 
-            color: var(--primary);
-        }
-
-        /* --- Forms & Inputs --- */
-        input, select { 
-            width: 100%; 
-            padding: 12px 14px; 
-            margin-top: 4px; 
-            margin-bottom: 15px; 
-            border: 1px solid var(--border); 
-            border-radius: 10px; 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            font-size: 15px; 
-            outline: none; 
-            transition: 0.2s;
-        }
-
-        input:focus, select:focus { 
-            border-color: var(--primary); 
-            box-shadow: 0 0 0 2px var(--primary-glow); 
-        }
-
-        label { 
-            font-size: 14px; 
-            color: var(--text-muted); 
-            font-weight: 500; 
-            margin-left: 2px; 
-            display: block; 
-        }
-
-        button { 
-            width: 100%; 
-            padding: 14px; 
-            background-color: var(--primary); 
-            color: #fff; 
-            border: none; 
-            border-radius: 10px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            margin-top: 10px; 
-            transition: 0.2s;
-        }
-
-        button:active { 
-            transform: scale(0.98); 
-        }
-
-        .btn-outline { 
-            background-color: transparent; 
-            border: 1px solid var(--border); 
-            color: var(--text-muted); 
-            box-shadow: none; 
-        }
-
-        .btn-outline:active { 
-            background-color: var(--surface-hover); 
-        }
+        input, select { width: 100%; padding: 12px 14px; margin-top: 4px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 10px; background-color: var(--bg-dark); color: var(--text-main); font-size: 15px; outline: none; transition: 0.2s; }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-glow); }
+        label { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-left: 2px; display: block; }
+        button { width: 100%; padding: 14px; background-color: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        button:active { transform: scale(0.98); }
+        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-muted); box-shadow: none; }
+        .btn-outline:active { background-color: var(--surface-hover); }
 
         /* --- Dashboard Header --- */
-        .app-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px; 
-        }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .app-header h2 { margin: 0; font-size: 20px; color: #fff; white-space: nowrap; }
+        .header-btns { display: flex; gap: 8px; }
+        .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); width: auto; padding: 6px 12px; font-size: 13px; margin: 0; border-radius: 8px; }
+        .summary-btn { background: var(--surface-dark); border: 1px solid var(--primary); color: #fff; width: auto; padding: 6px 12px; font-size: 13px; margin: 0; border-radius: 8px; }
+        .btn-text { display: inline; }
 
-        .app-header h2 { 
-            margin: 0; 
-            font-size: 20px; 
-            color: #fff; 
-            white-space: nowrap;
-        }
-
-        .header-btns {
-            display: flex;
-            gap: 8px;
-        }
-
-        .logout-btn { 
-            background: transparent; 
-            border: 1px solid var(--error); 
-            color: var(--error); 
-            width: auto; 
-            padding: 6px 12px; 
-            font-size: 13px; 
-            margin: 0; 
-            border-radius: 8px; 
-        }
-        
-        .summary-btn {
-            background: var(--surface-dark); 
-            border: 1px solid var(--primary); 
-            color: #fff; 
-            width: auto; 
-            padding: 6px 12px; 
-            font-size: 13px; 
-            margin: 0; 
-            border-radius: 8px; 
-        }
-
-        .btn-text {
-            display: inline;
-        }
-
-        /* ปรับปุ่มบนมือถือให้เล็กลง ซ่อนข้อความ */
         @media (max-width: 500px) {
             .app-header h2 { font-size: 17px; }
             .btn-text { display: none; }
@@ -190,30 +60,10 @@
         }
 
         /* --- Top Summary Cards --- */
-        .top-summary-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            margin-bottom: 20px; 
-        }
-
-        .top-card { 
-            background: linear-gradient(145deg, #1e293b, #0f172a); 
-            padding: 20px 10px; 
-            border-radius: 16px; 
-            text-align: center; 
-            border: 1px solid var(--border); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
-        }
-        
-        .deposit-card { order: 1; }
-        .withdraw-card { order: 2; }
-        .profit-card { 
-            order: 3; 
-            border-color: var(--primary); 
-            box-shadow: 0 4px 15px var(--primary-glow); 
-        }
-        
+        .top-summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .top-card { background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px 10px; border-radius: 16px; text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .deposit-card { order: 1; } .withdraw-card { order: 2; }
+        .profit-card { order: 3; border-color: var(--primary); box-shadow: 0 4px 15px var(--primary-glow); }
         .top-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
         .top-value { font-size: 24px; font-weight: 600; }
 
@@ -228,7 +78,6 @@
         .dash-title { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
         .dash-value { font-size: 18px; font-weight: 600; }
         .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-        
         .dash-stats { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12px; }
         .dash-stats > div { display: flex; justify-content: space-between; width: 100%; }
         .stat-label { color: var(--text-muted); font-weight: 500; }
@@ -253,7 +102,6 @@
         /* --- Transaction List Items --- */
         .list-container { display: flex; flex-direction: column; gap: 12px; }
         .list-item { background: var(--surface-dark); border-radius: 14px; padding: 15px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-        
         .item-icon-wrapper { width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; margin-right: 15px; flex-shrink: 0; }
         .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
         .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
@@ -263,11 +111,9 @@
         .item-title { font-weight: 600; font-size: 15px; }
         .item-date { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
         .item-note { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
-        
         .item-amount { text-align: right; flex-shrink: 0; }
         .val-foreign { font-weight: 600; font-size: 16px; }
         .val-thb { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
-        
         .item-actions { display: flex; flex-direction: column; gap: 8px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
         .action-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; margin: 0; min-width: 65px; text-align: center; white-space: nowrap; transition: 0.2s; }
         .action-btn.edit:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
@@ -275,16 +121,13 @@
         
         .positive { color: var(--secondary) !important; }
         .negative { color: var(--error) !important; }
-        
         .loading { text-align: center; color: var(--primary); display: none; padding: 20px; font-weight: 500; font-size: 15px; }
         .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(129,140,248,0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* FAB Button */
         .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 30px; background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; transition: 0.2s; }
         .fab:hover { transform: scale(1.05); }
 
-        /* Form section */
         .form-header { display: flex; align-items: center; margin-bottom: 25px; gap: 15px; }
         .back-btn { background: var(--surface-dark); width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 20px; margin: 0; padding: 0; cursor: pointer; }
         .hidden { display: none !important; }
@@ -510,7 +353,7 @@
     let monthlySummaryData = {};
     const SESSION_DAYS = 5;
     let editingRowNumber = null;
-    let editingSheetName = null; // ตัวแปรสำหรับจำว่าแก้ไขของ Sheet ไหน
+    let editingSheetName = null; 
 
     const datePicker = flatpickr("#txDate", {
         enableTime: true,
@@ -559,7 +402,14 @@
     function showMainApp() {
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('main-container').classList.remove('hidden');
-        // เอาการล็อกค่าปีอัตโนมัติออก ให้ผู้ใช้เห็นทั้งหมดแต่แรก
+        
+        // 🔥 สำคัญ: ล็อกให้แสดงปีปัจจุบันอัตโนมัติ ตอน Login เสร็จ!
+        const currentYearStr = new Date().getFullYear().toString();
+        const yearDropdown = document.getElementById('filterYear');
+        if([...yearDropdown.options].some(opt => opt.value === currentYearStr)) {
+            yearDropdown.value = currentYearStr;
+        }
+
         loadData();
     }
 
@@ -600,13 +450,12 @@
         window.scrollTo(0, 0);
     }
 
-    // 🔥 ปรับให้ค้นหาโดยใช้ sheetName ควบคู่ด้วย เพื่อป้องกันบั๊กแก้ผิด Sheet
     function editTransaction(sheetName, rowNum) {
         const item = allData.find(d => d.rowNumber === rowNum && d.sheetName === sheetName);
         if (!item) return;
 
         editingRowNumber = rowNum;
-        editingSheetName = sheetName; // จำชื่อ Sheet
+        editingSheetName = sheetName; 
 
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
@@ -625,7 +474,6 @@
         window.scrollTo(0, 0);
     }
 
-    // 🔥 ส่งชื่อ Sheet ไปลบด้วย
     function deleteTransaction(sheetName, rowNum) {
         if(confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?")) {
             document.getElementById('dash-loading').style.display = 'block';
@@ -648,7 +496,7 @@
     }
 
     function archiveData() {
-        if(confirm("⚠️ คำเตือน!\n\nระบบจะทำการคัดแยกข้อมูลที่ 'เก่ากว่าปีปัจจุบัน' ไปเก็บไว้ในแฟ้ม Archive \nเพื่อให้หน้าแอปทำงานได้รวดเร็วขึ้น\n\nคุณต้องการดำเนินการต่อหรือไม่?")) {
+        if(confirm("⚠️ คำเตือน!\n\nระบบจะทำการคัดแยกข้อมูลที่ 'เก่ากว่าปีปัจจุบัน' ไปเก็บไว้ในแฟ้ม Archive \nเพื่อให้การจัดเก็บใน Google Sheets เป็นระเบียบขึ้น\n\nคุณต้องการดำเนินการต่อหรือไม่?")) {
             document.getElementById('dash-loading').style.display = 'block';
             fetch(SCRIPT_URL, {
                 method: 'POST', 
@@ -658,7 +506,7 @@
             .then(res => res.json())
             .then(data => {
                 if(data.status === 'success') { 
-                    alert('✅ ทำการย้ายข้อมูลปีเก่าไป Archive เรียบร้อยแล้ว!');
+                    alert('✅ ทำการย้ายข้อมูลปีเก่าไป Archive เรียบร้อยแล้ว! (ข้อมูลยังดูได้ใน WebApp ตามปกติ)');
                     loadData(); 
                 } else { 
                     alert('❌ เกิดข้อผิดพลาด: ' + data.message); 
@@ -778,7 +626,11 @@
     function clearFilter() {
         document.getElementById('filterDay').value = ''; 
         document.getElementById('filterMonth').value = ''; 
-        document.getElementById('filterYear').value = ''; // ให้โชว์ทุกปีตามเดิม
+        
+        // 🔥 รีเซ็ตปุ๊บ กลับมาล็อกที่ปีปัจจุบันทันที
+        const currentYearStr = new Date().getFullYear().toString();
+        document.getElementById('filterYear').value = currentYearStr;
+        
         document.getElementById('startDate').value = ''; 
         document.getElementById('endDate').value = ''; 
         document.getElementById('limitRows').value = '30';
@@ -803,6 +655,7 @@
             
             if (selDay && d.getDate().toString() !== selDay) return false;
             if (selMonth && (d.getMonth() + 1).toString() !== selMonth) return false;
+            // 🔥 กรองตามปีที่เลือกใน Dropdown (ถ้าเลือก 2026 ก็จะโชว์แค่ 2026 ไม่สนว่ามาจาก Sheet ไหน)
             if (selYear && d.getFullYear().toString() !== selYear) return false;
 
             const itemTime = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
@@ -924,15 +777,16 @@
                 const icon = isDep ? '↑' : '↓'; 
                 const typeTh = isDep ? 'ฝาก' : 'ถอน';
                 
+                // ตราประทับ Archive เอาออกได้ถ้าไม่ชอบ (โชว์ว่ามาจาก Archive)
+                const archiveBadge = item.sheetName === 'Archive' ? '<span style="background:var(--surface-hover); color:#94a3b8; font-size:9px; padding:2px 6px; border-radius:4px; margin-left:6px;">Archive</span>' : '';
                 const noteHtml = item.note ? `<div class="item-note">📝 ${item.note}</div>` : '';
 
-                // 🔥 ส่ง sheetName ไปด้วยเวลาคลิกปุ่ม
                 html += `
                 <div class="list-item ${mainClass}">
                     <div class="item-left">
                         <div class="item-icon-wrapper">${icon}</div>
                         <div class="item-main">
-                            <div class="item-title">${typeTh} ${item.currency}</div>
+                            <div class="item-title">${typeTh} ${item.currency} ${archiveBadge}</div>
                             <div class="item-date">${dateStr}</div>
                             ${noteHtml}
                         </div>
@@ -968,7 +822,7 @@
         const payload = {
             action: editingRowNumber ? "edit" : "add",
             rowNumber: editingRowNumber,
-            sheetName: editingSheetName, // 🔥 ส่งชื่อ Sheet กลับไปด้วย
+            sheetName: editingSheetName, 
             date: payloadDate,
             currency: document.getElementById('currency').value,
             type: document.getElementById('type').value,
