@@ -82,7 +82,6 @@
             width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; 
             font-size: 16px; margin-right: 12px; flex-shrink: 0; 
         }
-        /* เปลี่ยนสีไอคอน: ฝาก (สีแดง), ถอน (สีเขียว) */
         .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
         .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
 
@@ -459,14 +458,15 @@
         } else {
             data.forEach(item => {
                 let d = new Date(item.date);
-                let dateStr = d.toLocaleDateString('th-TH', { day: '2-digit', month: 'short', year: '2-digit' }) + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit', minute:'2-digit'});
+                // 🔥 แก้เวลาเป็นแบบ 24H (hour12: false)
+                let dateStr = d.toLocaleDateString('th-TH', { day: '2-digit', month: 'short', year: '2-digit' }) + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit', minute:'2-digit', hour12: false}) + ' น.';
                 
                 let isDep = item.type === 'Deposit';
                 let mainClass = isDep ? 'deposit' : 'withdraw';
                 // เปลี่ยนตรรกะ: ฝาก = ติดลบ(แดง), ถอน = บวก(เขียว)
                 let textClass = isDep ? 'negative' : 'positive';
                 let sign = isDep ? '-' : '+';
-                let icon = isDep ? '↑' : '↓'; // ฝากเงินออก = ลูกศรขึ้น, ถอนเงินเข้า = ลูกศรลง
+                let icon = isDep ? '↑' : '↓'; 
                 let typeTh = isDep ? 'ฝาก' : 'ถอน';
                 
                 html += `
