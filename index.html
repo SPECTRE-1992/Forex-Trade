@@ -82,8 +82,9 @@
             width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; 
             font-size: 16px; margin-right: 12px; flex-shrink: 0; 
         }
-        .deposit .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
-        .withdraw .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
+        /* เปลี่ยนสีไอคอน: ฝาก (สีแดง), ถอน (สีเขียว) */
+        .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
+        .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
 
         .item-left { display: flex; align-items: center; flex: 1; overflow: hidden; }
         .item-main { display: flex; flex-direction: column; }
@@ -297,7 +298,6 @@
     }
 
     function showForm() {
-        // เคลียร์ค่าทั้งหมดทุกครั้งที่กดปุ่ม + เปิดฟอร์ม
         document.getElementById('forexForm').reset();
         document.getElementById('amountForeign').value = '';
         document.getElementById('rate').value = '';
@@ -422,11 +422,12 @@
                 const amtTHB = parseFloat(item.amountTHB) || 0; 
                 const isDep = item.type === "Deposit";
 
+                // เปลี่ยนตรรกะ: ฝาก = ติดลบ(แดง), ถอน = บวก(เขียว)
                 if(sums[currency] !== undefined) {
-                    sums[currency].f += isDep ? amtF : -amtF;
-                    sums[currency].thb += isDep ? amtTHB : -amtTHB;
+                    sums[currency].f += isDep ? -amtF : amtF;
+                    sums[currency].thb += isDep ? -amtTHB : amtTHB;
                 }
-                grandTotalTHB += isDep ? amtTHB : -amtTHB;
+                grandTotalTHB += isDep ? -amtTHB : amtTHB;
             });
         }
 
@@ -462,9 +463,10 @@
                 
                 let isDep = item.type === 'Deposit';
                 let mainClass = isDep ? 'deposit' : 'withdraw';
-                let textClass = isDep ? 'positive' : 'negative';
-                let sign = isDep ? '+' : '-';
-                let icon = isDep ? '↓' : '↑';
+                // เปลี่ยนตรรกะ: ฝาก = ติดลบ(แดง), ถอน = บวก(เขียว)
+                let textClass = isDep ? 'negative' : 'positive';
+                let sign = isDep ? '-' : '+';
+                let icon = isDep ? '↑' : '↓'; // ฝากเงินออก = ลูกศรขึ้น, ถอนเงินเข้า = ลูกศรลง
                 let typeTh = isDep ? 'ฝาก' : 'ถอน';
                 
                 html += `
@@ -508,7 +510,7 @@
 
         fetch(SCRIPT_URL, {
             method: 'POST', 
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // จำเป็นมากสำหรับ Google Apps Script
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
         })
         .then(res => res.json())
