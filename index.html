@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Forex App Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    
     <style>
         :root {
             --bg-dark: #0f172a; --surface-dark: #1e293b; --surface-hover: #334155;
@@ -15,97 +18,97 @@
 
         * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; padding-bottom: 80px; }
+        
+        /* 🔥 ขยายจอให้กว้างขึ้นสำหรับ PC */
+        .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 90px; }
 
         /* Login */
         #login-section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .login-card { background-color: var(--surface-dark); border-radius: 20px; padding: 25px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; }
-        h2 { font-weight: 600; margin-top: 0; margin-bottom: 20px; font-size: 20px; }
+        .login-card { background-color: var(--surface-dark); border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; }
+        h2 { font-weight: 600; margin-top: 0; margin-bottom: 20px; font-size: 22px; }
 
         /* Forms & Inputs */
         input, select { 
-            width: 100%; padding: 10px 12px; margin-top: 4px; margin-bottom: 12px; 
+            width: 100%; padding: 12px 14px; margin-top: 4px; margin-bottom: 15px; 
             border: 1px solid var(--border); border-radius: 10px; background-color: var(--bg-dark); 
-            color: var(--text-main); font-size: 14px; outline: none; 
+            color: var(--text-main); font-size: 15px; outline: none; transition: 0.2s;
         }
         input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-glow); }
-        label { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 2px; display: block; }
+        label { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-left: 2px; display: block; }
         button { 
-            width: 100%; padding: 12px; background-color: var(--primary); color: #fff; 
-            border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s;
+            width: 100%; padding: 14px; background-color: var(--primary); color: #fff; 
+            border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s;
         }
         button:active { transform: scale(0.98); }
         .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-muted); box-shadow: none; }
         .btn-outline:active { background-color: var(--surface-hover); }
 
         /* Dashboard Header */
-        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .app-header h2 { margin: 0; font-size: 18px; color: #fff; }
-        .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); width: auto; padding: 6px 12px; font-size: 12px; margin: 0; border-radius: 8px; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .app-header h2 { margin: 0; font-size: 20px; color: #fff; }
+        .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); width: auto; padding: 6px 14px; font-size: 13px; margin: 0; border-radius: 8px; }
 
         /* Summary Cards */
         .total-card { 
-            background: linear-gradient(145deg, #1e293b, #0f172a); padding: 15px; border-radius: 12px; 
-            text-align: center; border: 1px solid var(--primary); box-shadow: 0 4px 15px var(--primary-glow); margin-bottom: 15px; 
+            background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px; border-radius: 16px; 
+            text-align: center; border: 1px solid var(--primary); box-shadow: 0 4px 15px var(--primary-glow); margin-bottom: 20px; 
         }
-        .total-title { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
-        .total-value { font-size: 24px; font-weight: 600; }
+        .total-title { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; }
+        .total-value { font-size: 30px; font-weight: 600; }
 
-        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
         .dash-card { 
-            background: var(--surface-dark); padding: 12px 6px; border-radius: 12px; 
+            background: var(--surface-dark); padding: 15px 10px; border-radius: 14px; 
             text-align: center; border: 1px solid var(--border); 
         }
-        .dash-title { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
-        .dash-value { font-size: 14px; font-weight: 600; }
-        .dash-sub-value { font-size: 11px; color: var(--text-muted); margin-top: 4px; padding-top: 4px; border-top: 1px dashed var(--border); }
+        .dash-title { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+        .dash-value { font-size: 16px; font-weight: 600; }
+        .dash-sub-value { font-size: 12px; color: var(--text-muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); }
 
         /* Controls Panel */
         .controls-panel { 
-            background: var(--surface-dark); padding: 12px; border-radius: 12px; 
-            border: 1px solid var(--border); margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; 
+            background: var(--surface-dark); padding: 15px; border-radius: 14px; 
+            border: 1px solid var(--border); margin-bottom: 25px; display: flex; flex-direction: column; gap: 12px; 
         }
-        .controls-row { display: flex; gap: 8px; align-items: center; }
-        .controls-row select, .controls-row input { margin: 0; padding: 10px; font-size: 13px; flex: 1; min-width: 0; }
-        .controls-row button { margin: 0; padding: 10px 14px; font-size: 13px; width: auto; flex-shrink: 0; }
-        .separator { color: var(--text-muted); font-size: 13px; }
+        .controls-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .controls-row select, .controls-row input { margin: 0; padding: 10px; font-size: 14px; flex: 1; min-width: 120px; }
+        .controls-row button { margin: 0; padding: 10px 16px; font-size: 14px; width: auto; flex-shrink: 0; }
+        .separator { color: var(--text-muted); font-size: 14px; }
 
         /* Transaction List */
-        .section-title { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; margin-top: 0; }
-        .list-container { display: flex; flex-direction: column; gap: 10px; }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin-bottom: 15px; margin-top: 0; }
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
         
         .list-item { 
-            background: var(--surface-dark); border-radius: 12px; padding: 12px; 
-            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            background: var(--surface-dark); border-radius: 14px; padding: 15px; 
+            display: flex; justify-content: space-between; align-items: center; gap: 15px;
         }
         
         .item-icon-wrapper { 
-            width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; 
-            font-size: 16px; margin-right: 10px; flex-shrink: 0; 
+            width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; 
+            font-size: 18px; margin-right: 15px; flex-shrink: 0; 
         }
         .deposit .item-icon-wrapper { background: rgba(248, 113, 113, 0.15); color: var(--error); }
         .withdraw .item-icon-wrapper { background: rgba(52, 211, 153, 0.15); color: var(--secondary); }
 
         .item-left { display: flex; align-items: center; flex: 1; overflow: hidden; }
         .item-main { display: flex; flex-direction: column; }
-        .item-title { font-weight: 600; font-size: 13px; }
-        .item-date { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-        .item-note { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .item-title { font-weight: 600; font-size: 15px; }
+        .item-date { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+        .item-note { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
         
         .item-amount { text-align: right; flex-shrink: 0; }
-        .val-foreign { font-weight: 600; font-size: 14px; }
-        .val-thb { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .val-foreign { font-weight: 600; font-size: 16px; }
+        .val-thb { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
         
-        /* แก้ไขปุ่ม ให้อยู่มุมขวาและบังคับไม่ให้คำตกบรรทัด */
         .item-actions { 
-            display: flex; flex-direction: column; gap: 6px; 
-            padding-left: 10px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
+            display: flex; flex-direction: column; gap: 8px; 
+            padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
         }
         .action-btn { 
             background: transparent; border: 1px solid var(--border); color: var(--text-muted); 
-            padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; 
-            margin: 0; width: auto; min-width: 65px; text-align: center;
-            white-space: nowrap; /* 🔥 จุดสำคัญ: ป้องกันคำว่า แก้ไข ตกบรรทัด */
+            padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; 
+            margin: 0; min-width: 65px; text-align: center; white-space: nowrap; transition: 0.2s;
         }
         .action-btn.edit:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
         .action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
@@ -113,19 +116,20 @@
         .positive { color: var(--secondary) !important; }
         .negative { color: var(--error) !important; }
         
-        .loading { text-align: center; color: var(--primary); display: none; padding: 20px; font-weight: 500; font-size: 14px; }
-        .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(129,140,248,0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
+        .loading { text-align: center; color: var(--primary); display: none; padding: 20px; font-weight: 500; font-size: 15px; }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(129,140,248,0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* FAB */
         .fab { 
-            position: fixed; bottom: 25px; right: 25px; width: 56px; height: 56px; border-radius: 28px; 
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 30px; 
             background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; 
-            font-size: 28px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; 
+            font-size: 30px; box-shadow: 0 8px 20px var(--primary-glow); cursor: pointer; border: none; z-index: 1000; transition: 0.2s;
         }
+        .fab:hover { transform: scale(1.05); }
 
-        .form-header { display: flex; align-items: center; margin-bottom: 20px; gap: 15px; }
-        .back-btn { background: var(--surface-dark); width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 18px; margin: 0; padding: 0; cursor: pointer; }
+        .form-header { display: flex; align-items: center; margin-bottom: 25px; gap: 15px; }
+        .back-btn { background: var(--surface-dark); width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 20px; margin: 0; padding: 0; cursor: pointer; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -178,24 +182,13 @@
                 </select>
                 <select id="filterMonth" onchange="filterData()">
                     <option value="">เดือน</option>
-                    <option value="1">มกราคม</option>
-                    <option value="2">กุมภาพันธ์</option>
-                    <option value="3">มีนาคม</option>
-                    <option value="4">เมษายน</option>
-                    <option value="5">พฤษภาคม</option>
-                    <option value="6">มิถุนายน</option>
-                    <option value="7">กรกฎาคม</option>
-                    <option value="8">สิงหาคม</option>
-                    <option value="9">กันยายน</option>
-                    <option value="10">ตุลาคม</option>
-                    <option value="11">พฤศจิกายน</option>
-                    <option value="12">ธันวาคม</option>
+                    <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option><option value="3">มีนาคม</option>
+                    <option value="4">เมษายน</option><option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
+                    <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option><option value="9">กันยายน</option>
+                    <option value="10">ตุลาคม</option><option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
                 </select>
                 <select id="filterYear" onchange="filterData()">
-                    <option value="">ปี</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                    <option value="2026">2026</option>
+                    <option value="">ปี</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
                 </select>
             </div>
             <div class="controls-row">
@@ -205,44 +198,36 @@
             </div>
             <div class="controls-row">
                 <select id="limitRows" onchange="filterData()">
-                    <option value="30">แสดง 30 รายการ</option>
-                    <option value="50">แสดง 50 รายการ</option>
-                    <option value="100">แสดง 100 รายการ</option>
-                    <option value="all">แสดงทั้งหมด</option>
+                    <option value="30">แสดง 30 รายการ</option><option value="50">แสดง 50 รายการ</option>
+                    <option value="100">แสดง 100 รายการ</option><option value="all">แสดงทั้งหมด</option>
                 </select>
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
             </div>
         </div>
 
         <h3 class="section-title">ประวัติรายการ</h3>
-
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
-        
         <div class="list-container" id="transaction-list"></div>
-
         <button class="fab" onclick="showForm()">+</button>
     </div>
 
     <div id="form-section" class="hidden">
         <div class="form-header">
             <button class="back-btn" onclick="showDashboard()">←</button>
-            <h2 id="form-title" style="margin:0; font-size:20px;">บันทึก ฝาก/ถอน</h2>
+            <h2 id="form-title" style="margin:0; font-size:22px;">บันทึก ฝาก/ถอน</h2>
         </div>
         <form id="forexForm">
-            <label>วันที่/เวลา</label>
-            <input type="datetime-local" id="txDate" lang="en-GB" required>
+            <label>วันที่/เวลา (24H)</label>
+            <input type="text" id="txDate" placeholder="คลิกเพื่อเลือกเวลา" required>
 
             <label>สกุลเงิน</label>
             <select id="currency">
-                <option value="GBP">GBP</option>
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
+                <option value="GBP">GBP</option><option value="EUR">EUR</option><option value="USD">USD</option>
             </select>
 
             <label>ประเภท</label>
             <select id="type">
-                <option value="Deposit">ฝาก (Deposit)</option>
-                <option value="Withdraw">ถอน (Withdraw)</option>
+                <option value="Deposit">ฝาก (Deposit)</option><option value="Withdraw">ถอน (Withdraw)</option>
             </select>
 
             <label>จำนวนเงินต่างประเทศ</label>
@@ -263,6 +248,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
     // 🚨🚨🚨 ใส่ URL Web App ของคุณ 🚨🚨🚨
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDtIhfDFcfgvwdG2OvbUjJ9hYq3mH8795ZSW31x4SJs_F01-wZzyxMj3iUf6J6Gso/exec';
@@ -271,23 +258,16 @@
     const SESSION_DAYS = 5;
     let editingRowNumber = null;
 
-    // ฟังก์ชันสร้าง Format วันที่ให้ช่อง Input (หลีกเลี่ยง Timezone Shift)
-    function formatLocalToInput(d) {
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
-    }
-
-    function setDefaultDateTime() {
-        document.getElementById('txDate').value = formatLocalToInput(new Date());
-    }
+    // 🔥 ติดตั้ง Flatpickr ระบบเวลา 24H
+    const datePicker = flatpickr("#txDate", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true, // บังคับ 24 ชั่วโมง แน่นอน 100%
+        defaultDate: new Date()
+    });
 
     window.onload = function() { 
         checkSession(); 
-        setDefaultDateTime();
     };
 
     function checkSession() {
@@ -330,7 +310,8 @@
         document.getElementById('rate').value = '';
         document.getElementById('amountTHB').value = '';
         document.getElementById('note').value = '';
-        setDefaultDateTime(); 
+        
+        datePicker.setDate(new Date()); // รีเซ็ตเวลาเป็นปัจจุบัน
 
         document.getElementById('app-section').classList.add('hidden');
         document.getElementById('form-section').classList.remove('hidden');
@@ -351,8 +332,8 @@
         document.getElementById('form-title').innerText = "แก้ไขรายการ";
         document.getElementById('submitBtn').innerText = "อัปเดตข้อมูล";
 
-        const d = new Date(item.date);
-        document.getElementById('txDate').value = formatLocalToInput(d);
+        // ตั้งค่าเวลาเดิมลงใน Flatpickr
+        datePicker.setDate(new Date(item.date));
         
         document.getElementById('currency').value = item.currency;
         document.getElementById('type').value = item.type;
@@ -517,7 +498,9 @@
         const loading = document.getElementById('form-loading');
         btn.style.display = 'none'; loading.style.display = 'block';
 
-        const rawDate = document.getElementById('txDate').value;
+        // ดึงค่าจาก Flatpickr แล้วแปลงช่องว่างให้เป็น T ก่อนแนบ Timezone +07:00 
+        let rawDate = document.getElementById('txDate').value; 
+        rawDate = rawDate.replace(" ", "T"); 
         const payloadDate = rawDate + ":00+07:00"; 
 
         const payload = {
