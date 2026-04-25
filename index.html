@@ -127,18 +127,17 @@
 
         /* Filter */
         .filter-box {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 25px;
             background: var(--surface-dark);
             padding: 15px;
             border-radius: 16px;
             border: 1px solid var(--border);
+            margin-bottom: 25px;
         }
-        .filter-row { display: flex; gap: 10px; align-items: center; width: 100%; }
-        .filter-row select, .filter-row input { margin: 0; flex: 1; }
-        .filter-row button { margin: 0; width: auto; padding: 12px 16px; font-size: 14px; }
+        .filter-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; display: block; }
+        .date-range-row { display: flex; gap: 8px; align-items: center; }
+        .date-range-row input { margin: 0; flex: 1; padding: 10px; font-size: 14px; }
+        .date-range-row span { color: var(--text-muted); font-size: 13px; }
+        .date-range-row button { margin: 0; width: auto; padding: 10px 14px; font-size: 13px; }
 
         /* Summary Grid */
         .dash-grid {
@@ -159,7 +158,13 @@
         .dash-value { font-size: 16px; font-weight: 600; }
 
         /* Transaction List */
-        .section-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text-muted); }
+        .section-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 12px; 
+        }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-muted); margin: 0; }
+        .limit-select { width: auto; padding: 4px 8px; margin: 0; font-size: 13px; border-radius: 6px; background-color: var(--surface-dark); border-color: var(--border); }
+
         .list-container { display: flex; flex-direction: column; gap: 10px; }
         
         .list-item { 
@@ -222,7 +227,6 @@
         .back-btn { background: var(--surface-dark); width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: center; align-items: center; color: #fff; text-decoration: none; font-size: 18px; margin: 0; padding: 0; box-shadow: none; }
         .form-header h2 { margin: 0; font-size: 20px; }
 
-        /* Helpers */
         .hidden { display: none !important; }
     </style>
 </head>
@@ -249,31 +253,28 @@
         </div>
         
         <div class="filter-box">
-            <div class="filter-row">
-                <select id="filterType" onchange="toggleFilterInput()">
-                    <option value="all">ทุกช่วงเวลา</option>
-                    <option value="day">ระบุวัน</option>
-                    <option value="month">ระบุเดือน</option>
-                    <option value="year">ระบุปี</option>
-                </select>
-                <input type="date" id="filterDay" class="hidden" onchange="filterData()">
-                <input type="month" id="filterMonth" class="hidden" onchange="filterData()">
-                <input type="number" id="filterYear" class="hidden" placeholder="เช่น 2024" oninput="filterData()">
-            </div>
-            <div class="filter-row">
-                <select id="limitRows" onchange="filterData()">
-                    <option value="30">แสดง 30 รายการ</option>
-                    <option value="50">แสดง 50 รายการ</option>
-                    <option value="100">แสดง 100 รายการ</option>
-                    <option value="all">แสดงทั้งหมด</option>
-                </select>
+            <label class="filter-label">ระบุช่วงเวลา (Start Date - End Date)</label>
+            <div class="date-range-row">
+                <input type="date" id="startDate" onchange="filterData()">
+                <span>ถึง</span>
+                <input type="date" id="endDate" onchange="filterData()">
                 <button class="btn-outline" onclick="clearFilter()">รีเซ็ต</button>
             </div>
         </div>
 
-        <div class="dash-grid" id="summary-cards"></div>
+        <div class="dash-grid" id="summary-cards">
+            </div>
 
-        <div class="section-title">ประวัติรายการ</div>
+        <div class="section-header">
+            <h3 class="section-title">ประวัติรายการ</h3>
+            <select id="limitRows" class="limit-select" onchange="filterData()">
+                <option value="30">แสดง 30 รายการ</option>
+                <option value="50">แสดง 50 รายการ</option>
+                <option value="100">แสดง 100 รายการ</option>
+                <option value="all">แสดงทั้งหมด</option>
+            </select>
+        </div>
+
         <div id="dash-loading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
         
         <div class="list-container" id="transaction-list"></div>
@@ -319,11 +320,11 @@
 </div>
 
 <script>
-    // 🚨🚨🚨 นำ URL ของ Web App อันใหม่ที่เพิ่ง Deploy มาใส่ตรงนี้ 🚨🚨🚨
+    // 🚨🚨🚨 ใส่ URL Web App ของคุณ 🚨🚨🚨
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDtIhfDFcfgvwdG2OvbUjJ9hYq3mH8795ZSW31x4SJs_F01-wZzyxMj3iUf6J6Gso/exec';
 
     let allData = [];
-    const SESSION_DAYS = 5; // จดจำล็อกอินกี่วัน
+    const SESSION_DAYS = 5;
 
     // --- On Load Check Session ---
     window.onload = function() {
@@ -336,13 +337,12 @@
             const now = new Date().getTime();
             const diffDays = (now - parseInt(loginTime)) / (1000 * 3600 * 24);
             if (diffDays <= SESSION_DAYS) {
-                showMainApp(); // ถ้ารหัสยังไม่หมดอายุ ให้เข้าแอปเลย
+                showMainApp();
                 return;
             } else {
-                localStorage.removeItem('forexLoginTimestamp'); // หมดอายุแล้วเคลียร์ทิ้ง
+                localStorage.removeItem('forexLoginTimestamp');
             }
         }
-        // ถ้าไม่มีรหัส หรือหมดอายุ ให้โชว์หน้าล็อกอิน
         document.getElementById('login-section').style.display = 'flex';
     }
 
@@ -360,7 +360,7 @@
 
     function logout() {
         localStorage.removeItem('forexLoginTimestamp');
-        location.reload(); // รีเฟรชหน้าเว็บเพื่อกลับไปหน้าล็อกอิน
+        location.reload(); 
     }
 
     function showMainApp() {
@@ -404,7 +404,7 @@
             .then(res => {
                 if(res.status === 'success') {
                     allData = res.data;
-                    filterData(); // โหลดเสร็จสั่งประมวลผลการ์ด+ลิสต์ ทันที
+                    filterData(); // โหลดเสร็จสั่งให้ประมวลผลวาดการ์ดและรายการทันที
                 }
             })
             .catch(err => console.error(err))
@@ -412,61 +412,52 @@
     }
 
     // --- Filters System ---
-    function toggleFilterInput() {
-        const type = document.getElementById('filterType').value;
-        document.getElementById('filterDay').classList.toggle('hidden', type !== 'day');
-        document.getElementById('filterMonth').classList.toggle('hidden', type !== 'month');
-        document.getElementById('filterYear').classList.toggle('hidden', type !== 'year');
+    function clearFilter() {
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
         filterData();
     }
 
-    function clearFilter() {
-        document.getElementById('filterType').value = 'all';
-        document.getElementById('filterDay').value = '';
-        document.getElementById('filterMonth').value = '';
-        document.getElementById('filterYear').value = '';
-        document.getElementById('limitRows').value = '30';
-        toggleFilterInput(); // รีเซ็ตแล้วจะดึง filterData อัตโนมัติ
-    }
-
     function filterData() {
-        const type = document.getElementById('filterType').value;
+        const startDateStr = document.getElementById('startDate').value;
+        const endDateStr = document.getElementById('endDate').value;
         const limit = document.getElementById('limitRows').value;
         
         let filtered = allData;
 
-        // 1. กรองตาม วัน/เดือน/ปี
-        if(type !== 'all') {
+        // กรองตามช่วงเวลาที่ระบุ (ถ้ามี)
+        if(startDateStr || endDateStr) {
             filtered = allData.filter(item => {
                 if(!item.date) return false;
+                
+                // แปลงเวลาของ item ให้อยู่ที่ 00:00:00 ของวันนั้น เพื่อเปรียบเทียบง่ายขึ้น
                 const d = new Date(item.date);
-                const yyyy = d.getFullYear();
-                let mm = d.getMonth() + 1;
-                let dd = d.getDate();
-                if(mm < 10) mm = '0' + mm;
-                if(dd < 10) dd = '0' + dd;
+                d.setHours(0,0,0,0);
+                const itemTime = d.getTime();
 
-                if (type === 'day') {
-                    const filterVal = document.getElementById('filterDay').value; // YYYY-MM-DD
-                    if(!filterVal) return true; // ถ้ายังไม่เลือกวัน ให้โชว์หมดก่อน
-                    return `${yyyy}-${mm}-${dd}` === filterVal;
-                } else if (type === 'month') {
-                    const filterVal = document.getElementById('filterMonth').value; // YYYY-MM
-                    if(!filterVal) return true;
-                    return `${yyyy}-${mm}` === filterVal;
-                } else if (type === 'year') {
-                    const filterVal = document.getElementById('filterYear').value; // YYYY
-                    if(!filterVal) return true;
-                    return yyyy.toString() === filterVal;
+                let passStart = true;
+                let passEnd = true;
+
+                if (startDateStr) {
+                    const startD = new Date(startDateStr);
+                    startD.setHours(0,0,0,0);
+                    passStart = itemTime >= startD.getTime();
                 }
-                return true;
+                
+                if (endDateStr) {
+                    const endD = new Date(endDateStr);
+                    endD.setHours(23,59,59,999); // ให้อยู่จนถึงสิ้นวันของวันที่เลือก
+                    passEnd = d.getTime() <= endD.getTime();
+                }
+
+                return passStart && passEnd;
             });
         }
         
-        // 2. คำนวณสรุปยอด จากข้อมูลที่ "กรองวันที่" แล้วทั้งหมด (ไม่ต้องสนว่าโชว์กี่บรรทัด ยอดสรุปต้องเป๊ะ)
+        // คำนวณสรุปยอดจากการกรอง
         renderSummary(filtered);
 
-        // 3. หั่นข้อมูลเพื่อจำกัดจำนวนแถวที่ใช้แสดงผล (Limit Rows)
+        // ตัดจำนวนรายการที่แสดง
         let displayData = filtered;
         if(limit !== 'all') {
             displayData = filtered.slice(0, parseInt(limit));
@@ -479,10 +470,11 @@
         let sums = { "GBP": { net: 0 }, "EUR": { net: 0 }, "USD": { net: 0 } };
         
         data.forEach(item => {
+            const currency = item.currency ? item.currency.trim().toUpperCase() : '';
             const amt = parseFloat(item.amountForeign) || 0;
-            if(sums[item.currency]) {
-                if(item.type === "Deposit") sums[item.currency].net += amt;
-                if(item.type === "Withdraw") sums[item.currency].net -= amt;
+            if(sums[currency]) {
+                if(item.type === "Deposit") sums[currency].net += amt;
+                if(item.type === "Withdraw") sums[currency].net -= amt;
             }
         });
 
@@ -504,7 +496,7 @@
     function renderList(data) {
         let html = '';
         if(data.length === 0) {
-            html = '<div style="text-align:center; color:var(--text-muted); padding:30px; background:var(--surface-dark); border-radius:14px;">ไม่พบรายการในเงื่อนไขที่เลือก</div>';
+            html = '<div style="text-align:center; color:var(--text-muted); padding:30px; background:var(--surface-dark); border-radius:14px;">ไม่พบรายการในช่วงเวลาที่เลือก</div>';
         }
 
         data.forEach(item => {
@@ -563,7 +555,10 @@
         .then(res => res.json())
         .then(data => {
             if(data.status === 'success'){
+                // รีเซ็ตค่าในฟอร์มให้สะอาดทั้งหมดเมื่อบันทึกเสร็จ
                 document.getElementById('forexForm').reset();
+                document.getElementById('amountTHB').value = ''; 
+                
                 showDashboard();
                 loadData();
             } else {
