@@ -863,13 +863,13 @@
             </select>
 
             <label>จำนวนเงินต่างประเทศ</label>
-            <input type="number" id="amountForeign" step="0.01" placeholder="0.00" required>
+            <input type="number" id="amountForeign" step="any" inputmode="decimal" placeholder="0.00" required>
 
             <label>อัตราแลกเปลี่ยน</label>
-            <input type="number" id="rate" step="0.0001" placeholder="เช่น 45.50" required>
+            <input type="number" id="rate" step="any" inputmode="decimal" placeholder="เช่น 45.50" required>
 
             <label>จำนวนเงินบาท (THB)</label>
-            <input type="number" id="amountTHB" step="0.01" placeholder="0.00" required>
+            <input type="number" id="amountTHB" step="any" inputmode="decimal" placeholder="0.00" required>
 
             <label>หมายเหตุ</label>
             <input type="text" id="note" placeholder="เช่น Exness, ถอนกำไร...">
@@ -900,7 +900,8 @@
         enableTime: true,
         dateFormat: "Y-m-d H:i",
         time_24hr: true, 
-        defaultDate: new Date()
+        defaultDate: new Date(),
+        disableMobile: true // 🔥 เพิ่มคำสั่งนี้เพื่อปิดปฏิทินมือถือ แก้บั๊กแจ้งเตือน "ป้อนค่าที่ถูกต้อง"
     });
 
     window.onload = function() { 
@@ -944,7 +945,7 @@
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('main-container').classList.remove('hidden');
         
-        // 🔥 สำคัญ: ล็อกให้แสดงผลปีปัจจุบันอัตโนมัติ ทันทีที่เข้าแอป
+        // ล็อกให้แสดงผลปีปัจจุบันอัตโนมัติ ทันทีที่เข้าแอป
         const currentYearStr = new Date().getFullYear().toString();
         const yearDropdown = document.getElementById('filterYear');
         if([...yearDropdown.options].some(opt => opt.value === currentYearStr)) {
@@ -1057,7 +1058,6 @@
         }
     }
 
-    // Modal สรุปผล
     function showSummary() {
         const container = document.getElementById('summary-list-container');
         container.innerHTML = '';
@@ -1122,7 +1122,6 @@
         document.getElementById('summary-modal').style.display = 'none'; 
     }
 
-    // คำนวณ 2 ทาง
     const amtF = document.getElementById('amountForeign');
     const inputRate = document.getElementById('rate');
     const amtTHB = document.getElementById('amountTHB');
@@ -1162,7 +1161,6 @@
             .catch(err => console.error(err))
             .finally(() => { 
                 document.getElementById('dash-loading').style.display = 'none'; 
-                // เรียก filterData ต่อ เพื่อคำนวณตามตัวกรองปัจจุบัน (ซึ่งถูกตั้งเป็นปีปัจจุบันไว้แล้วตอน showMainApp)
                 filterData(); 
             });
     }
@@ -1171,7 +1169,6 @@
         document.getElementById('filterDay').value = ''; 
         document.getElementById('filterMonth').value = ''; 
         
-        // 🔥 เวลากดรีเซ็ตตัวกรอง ให้กลับมาล็อกที่ปีปัจจุบันเสมอ
         const currentYearStr = new Date().getFullYear().toString();
         document.getElementById('filterYear').value = currentYearStr;
         
@@ -1199,8 +1196,6 @@
             
             if (selDay && d.getDate().toString() !== selDay) return false;
             if (selMonth && (d.getMonth() + 1).toString() !== selMonth) return false;
-            
-            // กรองตามปีที่เลือกใน Dropdown
             if (selYear && d.getFullYear().toString() !== selYear) return false;
 
             const itemTime = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
